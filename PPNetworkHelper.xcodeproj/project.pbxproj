@@ -1,0 +1,518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22142E2B1D5E096E00EE2C40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E2A1D5E096E00EE2C40 /* main.m */; };
+		22142E2E1D5E096E00EE2C40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E2D1D5E096E00EE2C40 /* AppDelegate.m */; };
+		22142E311D5E096E00EE2C40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E301D5E096E00EE2C40 /* ViewController.m */; };
+		22142E341D5E096E00EE2C40 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22142E321D5E096E00EE2C40 /* Main.storyboard */; };
+		22142E361D5E096E00EE2C40 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22142E351D5E096E00EE2C40 /* Assets.xcassets */; };
+		22142E391D5E096E00EE2C40 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22142E371D5E096E00EE2C40 /* LaunchScreen.storyboard */; };
+		22142E441D5E096E00EE2C40 /* PPNetworkHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E431D5E096E00EE2C40 /* PPNetworkHelperTests.m */; };
+		22142E501D5E09A700EE2C40 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */; };
+		22142E531D5E09C000EE2C40 /* PPNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E521D5E09C000EE2C40 /* PPNetworkCache.m */; };
+		CF97D7DA7FB505359A0DB5C0 /* libPods-PPNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 208912CABCEA88A050F36FB3 /* libPods-PPNetworkHelper.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		22142E401D5E096E00EE2C40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22142E1E1D5E096E00EE2C40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22142E251D5E096E00EE2C40;
+			remoteInfo = PPNetworkHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0772539EDB0A1E91156E5731 /* Pods-PPNetworkHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PPNetworkHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PPNetworkHelper/Pods-PPNetworkHelper.debug.xcconfig"; sourceTree = "<group>"; };
+		208912CABCEA88A050F36FB3 /* libPods-PPNetworkHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PPNetworkHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22142E261D5E096E00EE2C40 /* PPNetworkHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PPNetworkHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22142E2A1D5E096E00EE2C40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		22142E2C1D5E096E00EE2C40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		22142E2D1D5E096E00EE2C40 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		22142E2F1D5E096E00EE2C40 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		22142E301D5E096E00EE2C40 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		22142E331D5E096E00EE2C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		22142E351D5E096E00EE2C40 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		22142E381D5E096E00EE2C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		22142E3A1D5E096E00EE2C40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22142E3F1D5E096E00EE2C40 /* PPNetworkHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PPNetworkHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		22142E431D5E096E00EE2C40 /* PPNetworkHelperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelperTests.m; sourceTree = "<group>"; };
+		22142E451D5E096E00EE2C40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22142E4E1D5E09A700EE2C40 /* PPNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkHelper.h; sourceTree = "<group>"; };
+		22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelper.m; sourceTree = "<group>"; };
+		22142E511D5E09C000EE2C40 /* PPNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkCache.h; sourceTree = "<group>"; };
+		22142E521D5E09C000EE2C40 /* PPNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkCache.m; sourceTree = "<group>"; };
+		3C821E30EAACCC244FF78AF9 /* Pods-PPNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PPNetworkHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-PPNetworkHelper/Pods-PPNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		22142E231D5E096E00EE2C40 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF97D7DA7FB505359A0DB5C0 /* libPods-PPNetworkHelper.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22142E3C1D5E096E00EE2C40 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		22142E1D1D5E096E00EE2C40 = {
+			isa = PBXGroup;
+			children = (
+				22142E281D5E096E00EE2C40 /* PPNetworkHelper */,
+				22142E421D5E096E00EE2C40 /* PPNetworkHelperTests */,
+				22142E271D5E096E00EE2C40 /* Products */,
+				714A5357DD24A6FEC1BFABEC /* Pods */,
+				933C759DBA146FA6F466CD93 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		22142E271D5E096E00EE2C40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				22142E261D5E096E00EE2C40 /* PPNetworkHelper.app */,
+				22142E3F1D5E096E00EE2C40 /* PPNetworkHelperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		22142E281D5E096E00EE2C40 /* PPNetworkHelper */ = {
+			isa = PBXGroup;
+			children = (
+				22142E541D5E09D200EE2C40 /* PPNetworkHelper */,
+				22142E2C1D5E096E00EE2C40 /* AppDelegate.h */,
+				22142E2D1D5E096E00EE2C40 /* AppDelegate.m */,
+				22142E2F1D5E096E00EE2C40 /* ViewController.h */,
+				22142E301D5E096E00EE2C40 /* ViewController.m */,
+				22142E321D5E096E00EE2C40 /* Main.storyboard */,
+				22142E351D5E096E00EE2C40 /* Assets.xcassets */,
+				22142E371D5E096E00EE2C40 /* LaunchScreen.storyboard */,
+				22142E3A1D5E096E00EE2C40 /* Info.plist */,
+				22142E291D5E096E00EE2C40 /* Supporting Files */,
+			);
+			path = PPNetworkHelper;
+			sourceTree = "<group>";
+		};
+		22142E291D5E096E00EE2C40 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				22142E2A1D5E096E00EE2C40 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		22142E421D5E096E00EE2C40 /* PPNetworkHelperTests */ = {
+			isa = PBXGroup;
+			children = (
+				22142E431D5E096E00EE2C40 /* PPNetworkHelperTests.m */,
+				22142E451D5E096E00EE2C40 /* Info.plist */,
+			);
+			path = PPNetworkHelperTests;
+			sourceTree = "<group>";
+		};
+		22142E541D5E09D200EE2C40 /* PPNetworkHelper */ = {
+			isa = PBXGroup;
+			children = (
+				22142E4E1D5E09A700EE2C40 /* PPNetworkHelper.h */,
+				22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */,
+				22142E511D5E09C000EE2C40 /* PPNetworkCache.h */,
+				22142E521D5E09C000EE2C40 /* PPNetworkCache.m */,
+			);
+			name = PPNetworkHelper;
+			sourceTree = "<group>";
+		};
+		714A5357DD24A6FEC1BFABEC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0772539EDB0A1E91156E5731 /* Pods-PPNetworkHelper.debug.xcconfig */,
+				3C821E30EAACCC244FF78AF9 /* Pods-PPNetworkHelper.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		933C759DBA146FA6F466CD93 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				208912CABCEA88A050F36FB3 /* libPods-PPNetworkHelper.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		22142E251D5E096E00EE2C40 /* PPNetworkHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22142E481D5E096E00EE2C40 /* Build configuration list for PBXNativeTarget "PPNetworkHelper" */;
+			buildPhases = (
+				507C783313579F206D6D144E /* 📦 Check Pods Manifest.lock */,
+				22142E221D5E096E00EE2C40 /* Sources */,
+				22142E231D5E096E00EE2C40 /* Frameworks */,
+				22142E241D5E096E00EE2C40 /* Resources */,
+				CC916193D8DD563CF707CB5E /* 📦 Embed Pods Frameworks */,
+				CAC20D04A5685FCB15233AE6 /* 📦 Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PPNetworkHelper;
+			productName = PPNetworkHelper;
+			productReference = 22142E261D5E096E00EE2C40 /* PPNetworkHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		22142E3E1D5E096E00EE2C40 /* PPNetworkHelperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22142E4B1D5E096E00EE2C40 /* Build configuration list for PBXNativeTarget "PPNetworkHelperTests" */;
+			buildPhases = (
+				22142E3B1D5E096E00EE2C40 /* Sources */,
+				22142E3C1D5E096E00EE2C40 /* Frameworks */,
+				22142E3D1D5E096E00EE2C40 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22142E411D5E096E00EE2C40 /* PBXTargetDependency */,
+			);
+			name = PPNetworkHelperTests;
+			productName = PPNetworkHelperTests;
+			productReference = 22142E3F1D5E096E00EE2C40 /* PPNetworkHelperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		22142E1E1D5E096E00EE2C40 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = AndyPang;
+				TargetAttributes = {
+					22142E251D5E096E00EE2C40 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					22142E3E1D5E096E00EE2C40 = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 22142E251D5E096E00EE2C40;
+					};
+				};
+			};
+			buildConfigurationList = 22142E211D5E096E00EE2C40 /* Build configuration list for PBXProject "PPNetworkHelper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 22142E1D1D5E096E00EE2C40;
+			productRefGroup = 22142E271D5E096E00EE2C40 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				22142E251D5E096E00EE2C40 /* PPNetworkHelper */,
+				22142E3E1D5E096E00EE2C40 /* PPNetworkHelperTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		22142E241D5E096E00EE2C40 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22142E391D5E096E00EE2C40 /* LaunchScreen.storyboard in Resources */,
+				22142E361D5E096E00EE2C40 /* Assets.xcassets in Resources */,
+				22142E341D5E096E00EE2C40 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22142E3D1D5E096E00EE2C40 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		507C783313579F206D6D144E /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CAC20D04A5685FCB15233AE6 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PPNetworkHelper/Pods-PPNetworkHelper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC916193D8DD563CF707CB5E /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PPNetworkHelper/Pods-PPNetworkHelper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22142E221D5E096E00EE2C40 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22142E531D5E09C000EE2C40 /* PPNetworkCache.m in Sources */,
+				22142E311D5E096E00EE2C40 /* ViewController.m in Sources */,
+				22142E2E1D5E096E00EE2C40 /* AppDelegate.m in Sources */,
+				22142E501D5E09A700EE2C40 /* PPNetworkHelper.m in Sources */,
+				22142E2B1D5E096E00EE2C40 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22142E3B1D5E096E00EE2C40 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22142E441D5E096E00EE2C40 /* PPNetworkHelperTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22142E411D5E096E00EE2C40 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22142E251D5E096E00EE2C40 /* PPNetworkHelper */;
+			targetProxy = 22142E401D5E096E00EE2C40 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		22142E321D5E096E00EE2C40 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22142E331D5E096E00EE2C40 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		22142E371D5E096E00EE2C40 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22142E381D5E096E00EE2C40 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		22142E461D5E096E00EE2C40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22142E471D5E096E00EE2C40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		22142E491D5E096E00EE2C40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0772539EDB0A1E91156E5731 /* Pods-PPNetworkHelper.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = PPNetworkHelper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jkpang.PPNetworkHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		22142E4A1D5E096E00EE2C40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C821E30EAACCC244FF78AF9 /* Pods-PPNetworkHelper.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = PPNetworkHelper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jkpang.PPNetworkHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		22142E4C1D5E096E00EE2C40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PPNetworkHelperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jkpang.PPNetworkHelperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PPNetworkHelper.app/PPNetworkHelper";
+			};
+			name = Debug;
+		};
+		22142E4D1D5E096E00EE2C40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = PPNetworkHelperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jkpang.PPNetworkHelperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PPNetworkHelper.app/PPNetworkHelper";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22142E211D5E096E00EE2C40 /* Build configuration list for PBXProject "PPNetworkHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22142E461D5E096E00EE2C40 /* Debug */,
+				22142E471D5E096E00EE2C40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22142E481D5E096E00EE2C40 /* Build configuration list for PBXNativeTarget "PPNetworkHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22142E491D5E096E00EE2C40 /* Debug */,
+				22142E4A1D5E096E00EE2C40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22142E4B1D5E096E00EE2C40 /* Build configuration list for PBXNativeTarget "PPNetworkHelperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22142E4C1D5E096E00EE2C40 /* Debug */,
+				22142E4D1D5E096E00EE2C40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 22142E1E1D5E096E00EE2C40 /* Project object */;
+}
