@@ -35,10 +35,6 @@ typedef void (^HttpProgress)(NSProgress *progress);
 /** 网络状态的Block*/
 typedef void(^NetworkStatus)(PPNetworkStatus status);
 
-/** 请求任务 */
-typedef NSURLSessionTask PPURLSessionTask;
-
-#pragma mark - 网络数据请求类
 
 
 @interface PPNetworkHelper : NSObject
@@ -63,7 +59,10 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)GET:(NSString *)URL
+                        parameters:(NSDictionary *)parameters
+                           success:(HttpRequestSuccess)success
+                           failure:(HttpRequestFailed)failure;
 
 /**
  *  GET请求,自动缓存
@@ -76,7 +75,11 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)GET:(NSString *)URL
+                        parameters:(NSDictionary *)parameters
+                     responseCache:(HttpRequestCache)responseCache
+                           success:(HttpRequestSuccess)success
+                           failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,无缓存
@@ -88,7 +91,10 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
+                         parameters:(NSDictionary *)parameters
+                            success:(HttpRequestSuccess)success
+                            failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,自动缓存
@@ -101,7 +107,11 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
+                         parameters:(NSDictionary *)parameters
+                      responseCache:(HttpRequestCache)responseCache
+                            success:(HttpRequestSuccess)success
+                            failure:(HttpRequestFailed)failure;
 
 /**
  *  上传图片文件
@@ -118,7 +128,15 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-+ (PPURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)uploadWithURL:(NSString *)URL
+                                  parameters:(NSDictionary *)parameters
+                                      images:(NSArray<UIImage *> *)images
+                                        name:(NSString *)name
+                                    fileName:(NSString *)fileName
+                                    mimeType:(NSString *)mimeType
+                                    progress:(HttpProgress)progress
+                                     success:(HttpRequestSuccess)success
+                                     failure:(HttpRequestFailed)failure;
 
 /**
  *  下载文件
@@ -131,7 +149,11 @@ typedef NSURLSessionTask PPURLSessionTask;
  *
  *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
-+ (PPURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePath))success failure:(HttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL
+                                       fileDir:(NSString *)fileDir
+                                      progress:(HttpProgress)progress
+                                       success:(void(^)(NSString *filePath))success
+                                       failure:(HttpRequestFailed)failure;
 
 
 @end

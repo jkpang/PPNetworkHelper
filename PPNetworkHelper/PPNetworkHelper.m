@@ -59,7 +59,11 @@ static NetworkStatus _status;
 }
 
 #pragma mark - GET请求无缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
+
++ (NSURLSessionTask *)GET:(NSString *)URL
+               parameters:(NSDictionary *)parameters
+                  success:(HttpRequestSuccess)success
+                  failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
@@ -80,7 +84,11 @@ static NetworkStatus _status;
 }
 
 #pragma mark - GET请求自动缓存
-+ (PPURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (NSURLSessionTask *)GET:(NSString *)URL
+               parameters:(NSDictionary *)parameters
+            responseCache:(HttpRequestCache)responseCache
+                  success:(HttpRequestSuccess)success
+                  failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     //读取缓存
@@ -107,7 +115,10 @@ static NetworkStatus _status;
 }
 
 #pragma mark - POST请求无缓存
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (NSURLSessionTask *)POST:(NSString *)URL
+                parameters:(NSDictionary *)parameters
+                   success:(HttpRequestSuccess)success
+                   failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -129,7 +140,11 @@ static NetworkStatus _status;
 }
 
 #pragma mark - POST请求自动缓存
-+ (PPURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (NSURLSessionTask *)POST:(NSString *)URL
+                parameters:(NSDictionary *)parameters
+             responseCache:(HttpRequestCache)responseCache
+                   success:(HttpRequestSuccess)success
+                   failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -157,7 +172,15 @@ static NetworkStatus _status;
 }
 
 #pragma mark - 上传图片文件
-+ (PPURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure
++ (NSURLSessionTask *)uploadWithURL:(NSString *)URL
+                         parameters:(NSDictionary *)parameters
+                             images:(NSArray<UIImage *> *)images
+                               name:(NSString *)name
+                           fileName:(NSString *)fileName
+                           mimeType:(NSString *)mimeType
+                           progress:(HttpProgress)progress
+                            success:(HttpRequestSuccess)success
+                            failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -187,7 +210,11 @@ static NetworkStatus _status;
 }
 
 #pragma mark - 下载文件
-+ (PPURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *))success failure:(HttpRequestFailed)failure
++ (NSURLSessionTask *)downloadWithURL:(NSString *)URL
+                              fileDir:(NSString *)fileDir
+                             progress:(HttpProgress)progress
+                              success:(void(^)(NSString *))success
+                              failure:(HttpRequestFailed)failure
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     

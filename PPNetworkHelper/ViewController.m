@@ -100,7 +100,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 
 - (IBAction)download:(UIButton *)sender {
     
-    static PPURLSessionTask *task = nil;
+    static NSURLSessionTask *task = nil;
     //开始下载
     if(!self.isDownload)
     {
