@@ -113,7 +113,7 @@
 + (void)startMonitoringNetwork;
 
 /**
- *  实时获取网络状态回调
+ *  通过Block回调实时获取网络状态,也可以通过返回值进行一次性判断
  */
 + (void)networkStatusWithBlock:(NetworkStatus)status;
 ```

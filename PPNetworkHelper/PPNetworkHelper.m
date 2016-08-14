@@ -20,8 +20,9 @@
 
 
 @implementation PPNetworkHelper
-static AFHTTPSessionManager *_manager = nil;
+static AFHTTPSessionManager *_manager;
 static NetworkStatus _status;
+static BOOL _isNetwork;
 
 #pragma mark - 开始监听网络
 + (void)startMonitoringNetwork
@@ -33,18 +34,22 @@ static NetworkStatus _status;
         {
             case AFNetworkReachabilityStatusUnknown:
                 _status(PPNetworkStatusUnknown);
+                _isNetwork = NO;
                 PPLog(@"未知网络");
                 break;
             case AFNetworkReachabilityStatusNotReachable:
                 _status(PPNetworkStatusNotReachable);
+                _isNetwork = NO;
                 PPLog(@"无网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 _status(PPNetworkStatusReachableViaWWAN);
+                _isNetwork = YES;
                 PPLog(@"手机自带网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 _status(PPNetworkStatusReachableViaWiFi);
+                _isNetwork = YES;
                 PPLog(@"WIFI");
                 break;
         }
@@ -53,9 +58,10 @@ static NetworkStatus _status;
     
 }
 
-+ (void)networkStatusWithBlock:(NetworkStatus)status
++ (BOOL)networkStatusWithBlock:(NetworkStatus)status
 {
-    _status = status;
+    status ? _status = status : nil;
+    return _isNetwork;
 }
 
 #pragma mark - GET请求无缓存
