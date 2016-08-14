@@ -115,7 +115,7 @@
 /**
  *  通过Block回调实时获取网络状态,也可以通过返回值进行一次性判断
  */
-+ (void)networkStatusWithBlock:(NetworkStatus)status;
++ (BOOL)networkStatusWithBlock:(NetworkStatus)status;
 ```
 ##二、PPNetworkCache,数据缓存部分-对YYCache超简单封装(简单到不能叫封装吧)
 ###1.缓存数据
