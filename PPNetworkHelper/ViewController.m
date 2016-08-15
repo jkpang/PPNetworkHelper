@@ -35,12 +35,16 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus status) {
+    
+    //检查网络状态
+    [PPNetworkHelper checkNetworkStatusWithBlock:^(PPNetworkStatus status) {
         switch (status) {
             case PPNetworkStatusUnknown:
             case PPNetworkStatusNotReachable: {
                 self.networkData.text = @"没有网络";
-                [self getData:YES url:@"http://www.qinto.com/wap/index.php?ctl=article_cate&act=api_app_getarticle_cate&num=1&p=1"];
+                
+                [self getData:YES url:dataUrl];
+                
                 NSLog(@"无网络,加载缓存数据");
                 break;
             }
@@ -55,6 +59,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 
 }
 
+#pragma  mark - 获取数据
 - (void)getData:(BOOL)isOn url:(NSString *)url
 {
     
