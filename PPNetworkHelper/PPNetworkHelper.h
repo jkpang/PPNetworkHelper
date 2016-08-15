@@ -47,7 +47,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
 /**
  *  通过Block回调实时获取网络状态,也可以通过返回值进行一次性判断
  */
-+ (BOOL)networkStatusWithBlock:(NetworkStatus)status;
++ (BOOL)checkNetworkStatusWithBlock:(NetworkStatus)status;
 
 /**
  *  GET请求,无缓存
