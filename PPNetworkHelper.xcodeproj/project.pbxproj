@@ -14,8 +14,8 @@
 		22142E361D5E096E00EE2C40 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22142E351D5E096E00EE2C40 /* Assets.xcassets */; };
 		22142E391D5E096E00EE2C40 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22142E371D5E096E00EE2C40 /* LaunchScreen.storyboard */; };
 		22142E441D5E096E00EE2C40 /* PPNetworkHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E431D5E096E00EE2C40 /* PPNetworkHelperTests.m */; };
-		22142E501D5E09A700EE2C40 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */; };
-		22142E531D5E09C000EE2C40 /* PPNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22142E521D5E09C000EE2C40 /* PPNetworkCache.m */; };
+		22BEDC4B1D64B67100A72128 /* PPNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BEDC481D64B67100A72128 /* PPNetworkCache.m */; };
+		22BEDC4C1D64B67100A72128 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */; };
 		CF97D7DA7FB505359A0DB5C0 /* libPods-PPNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 208912CABCEA88A050F36FB3 /* libPods-PPNetworkHelper.a */; };
 /* End PBXBuildFile section */
 
@@ -45,10 +45,10 @@
 		22142E3F1D5E096E00EE2C40 /* PPNetworkHelperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PPNetworkHelperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22142E431D5E096E00EE2C40 /* PPNetworkHelperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelperTests.m; sourceTree = "<group>"; };
 		22142E451D5E096E00EE2C40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		22142E4E1D5E09A700EE2C40 /* PPNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkHelper.h; sourceTree = "<group>"; };
-		22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelper.m; sourceTree = "<group>"; };
-		22142E511D5E09C000EE2C40 /* PPNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkCache.h; sourceTree = "<group>"; };
-		22142E521D5E09C000EE2C40 /* PPNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkCache.m; sourceTree = "<group>"; };
+		22BEDC471D64B67100A72128 /* PPNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkCache.h; sourceTree = "<group>"; };
+		22BEDC481D64B67100A72128 /* PPNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkCache.m; sourceTree = "<group>"; };
+		22BEDC491D64B67100A72128 /* PPNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkHelper.h; sourceTree = "<group>"; };
+		22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelper.m; sourceTree = "<group>"; };
 		3C821E30EAACCC244FF78AF9 /* Pods-PPNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PPNetworkHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-PPNetworkHelper/Pods-PPNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,7 +94,7 @@
 		22142E281D5E096E00EE2C40 /* PPNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
-				22142E541D5E09D200EE2C40 /* PPNetworkHelper */,
+				22BEDC461D64B67100A72128 /* PPNetworkHelper */,
 				22142E2C1D5E096E00EE2C40 /* AppDelegate.h */,
 				22142E2D1D5E096E00EE2C40 /* AppDelegate.m */,
 				22142E2F1D5E096E00EE2C40 /* ViewController.h */,
@@ -125,15 +125,15 @@
 			path = PPNetworkHelperTests;
 			sourceTree = "<group>";
 		};
-		22142E541D5E09D200EE2C40 /* PPNetworkHelper */ = {
+		22BEDC461D64B67100A72128 /* PPNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
-				22142E4E1D5E09A700EE2C40 /* PPNetworkHelper.h */,
-				22142E4F1D5E09A700EE2C40 /* PPNetworkHelper.m */,
-				22142E511D5E09C000EE2C40 /* PPNetworkCache.h */,
-				22142E521D5E09C000EE2C40 /* PPNetworkCache.m */,
+				22BEDC471D64B67100A72128 /* PPNetworkCache.h */,
+				22BEDC481D64B67100A72128 /* PPNetworkCache.m */,
+				22BEDC491D64B67100A72128 /* PPNetworkHelper.h */,
+				22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */,
 			);
-			name = PPNetworkHelper;
+			path = PPNetworkHelper;
 			sourceTree = "<group>";
 		};
 		714A5357DD24A6FEC1BFABEC /* Pods */ = {
@@ -304,10 +304,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22142E531D5E09C000EE2C40 /* PPNetworkCache.m in Sources */,
 				22142E311D5E096E00EE2C40 /* ViewController.m in Sources */,
+				22BEDC4C1D64B67100A72128 /* PPNetworkHelper.m in Sources */,
+				22BEDC4B1D64B67100A72128 /* PPNetworkCache.m in Sources */,
 				22142E2E1D5E096E00EE2C40 /* AppDelegate.m in Sources */,
-				22142E501D5E09A700EE2C40 /* PPNetworkHelper.m in Sources */,
 				22142E2B1D5E096E00EE2C40 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -62,7 +62,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 #pragma  mark - 获取数据
 - (void)getData:(BOOL)isOn url:(NSString *)url
 {
-    
+
     //自动缓存
     if(isOn)
     {
