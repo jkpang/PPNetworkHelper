@@ -19,15 +19,25 @@ static YYCache *_dataCache;
     _dataCache = [YYCache cacheWithName:NetworkResponseCache];
 }
 
-+ (void)saveResponseCache:(id)responseCache forKey:(NSString *)key
++ (void)saveHttpCache:(id)httpCache forKey:(NSString *)key
 {
     //异步缓存,不会阻塞主线程
-    [_dataCache setObject:responseCache forKey:key withBlock:nil];
+    [_dataCache setObject:httpCache forKey:key withBlock:nil];
 }
 
-+ (id)getResponseCacheForKey:(NSString *)key
++ (id)getHttpCacheForKey:(NSString *)key
 {
     return [_dataCache objectForKey:key];
+}
+
++ (NSInteger)getHttpCacheSize
+{
+    return [_dataCache.diskCache totalCost];
+}
+
++ (void)removeHttpCache
+{
+    [_dataCache.diskCache removeAllObjects];
 }
 
 @end
