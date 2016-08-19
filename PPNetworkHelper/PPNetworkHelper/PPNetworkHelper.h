@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "PPNetworkCache.h"
 
 typedef NS_ENUM(NSUInteger, PPNetworkStatus) {
     /** 未知网络*/

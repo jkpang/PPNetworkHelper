@@ -8,7 +8,6 @@
 
 
 #import "PPNetworkHelper.h"
-#import "PPNetworkCache.h"
 #import <AFNetworking.h>
 
 
@@ -98,7 +97,7 @@ static BOOL _isNetwork;
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     //读取缓存
-    responseCache([PPNetworkCache getResponseCacheForKey:URL]);
+    responseCache([PPNetworkCache getHttpCacheForKey:URL]);
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -108,7 +107,7 @@ static BOOL _isNetwork;
         
         success(responseObject);
         //对数据进行异步缓存
-        [PPNetworkCache saveResponseCache:responseObject forKey:URL];
+        [PPNetworkCache saveHttpCache:responseObject forKey:URL];
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -155,7 +154,7 @@ static BOOL _isNetwork;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     //读取缓存
-    responseCache([PPNetworkCache getResponseCacheForKey:URL]);
+    responseCache([PPNetworkCache getHttpCacheForKey:URL]);
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -165,7 +164,7 @@ static BOOL _isNetwork;
         
         success(responseObject);
         //对数据进行异步缓存
-        [PPNetworkCache saveResponseCache:responseObject forKey:URL];
+        [PPNetworkCache saveHttpCache:responseObject forKey:URL];
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
