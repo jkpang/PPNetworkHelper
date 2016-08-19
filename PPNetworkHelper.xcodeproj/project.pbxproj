@@ -128,10 +128,10 @@
 		22BEDC461D64B67100A72128 /* PPNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
-				22BEDC471D64B67100A72128 /* PPNetworkCache.h */,
-				22BEDC481D64B67100A72128 /* PPNetworkCache.m */,
 				22BEDC491D64B67100A72128 /* PPNetworkHelper.h */,
 				22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */,
+				22BEDC471D64B67100A72128 /* PPNetworkCache.h */,
+				22BEDC481D64B67100A72128 /* PPNetworkCache.m */,
 			);
 			path = PPNetworkHelper;
 			sourceTree = "<group>";
