@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.homepage     = "https://github.com/jkpang/PPNetworkHelper"
  
-  s.license      = "MIT"
+  s.license      = { :type => "MIT", :file => "LICENSE" }
 
   s.author       = { "jkpang" => "jkpang@outlook.com" }
 
