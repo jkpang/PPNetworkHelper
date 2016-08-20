@@ -151,3 +151,11 @@
 ```
 以上就是对AFN3.x结合YYCache的简单封装,全部是类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~欢迎各路大神的批评指正以及建议.
 
+##联系方式:
+* Weibo : @CoderPang
+* Email : jkpang@outlook.com
+* QQ : 2406552315
+
+##许可证
+PPNetworkHelper 使用 MIT 许可证，详情见 LICENSE 文件。
+

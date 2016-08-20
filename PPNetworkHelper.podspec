@@ -2,12 +2,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "PPNetworkHelper"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "对AFNetworking 3.x 与YYCache的二次封装,存取超简单,告别FMDB!"
-
-  s.description  = <<-DESC
-		    对AFNetworking 3.x 与YYCache的二次封装,存取超简单,告别FMDB!
-                   DESC
 
   s.homepage     = "https://github.com/jkpang/PPNetworkHelper"
  
@@ -17,7 +13,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "7.0"
 
-  s.source       = { :git => "https://github.com/jkpang/PPNetworkHelper.git", :tag => "0.1.0" }
+  s.source       = { :git => "https://github.com/jkpang/PPNetworkHelper.git", :tag => "0.1.1" }
 
   s.source_files = "PPNetworkHelper/PPNetworkHelper/PPNetworkHelper/*.{h,m}"
   
