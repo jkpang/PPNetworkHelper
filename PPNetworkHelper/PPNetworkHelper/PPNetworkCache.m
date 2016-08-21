@@ -30,12 +30,12 @@ static YYCache *_dataCache;
     return [_dataCache objectForKey:key];
 }
 
-+ (NSInteger)getHttpCacheSize
++ (NSInteger)getAllHttpCacheSize
 {
     return [_dataCache.diskCache totalCost];
 }
 
-+ (void)removeHttpCache
++ (void)removeAllHttpCache
 {
     [_dataCache.diskCache removeAllObjects];
 }
