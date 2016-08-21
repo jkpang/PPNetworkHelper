@@ -141,12 +141,12 @@
 /**
  *  获取网络缓存的总大小 bytes(字节)
  */
-+ (NSInteger)getHttpCacheSize;
++ (NSInteger)getAllHttpCacheSize;
 
 /**
  *  删除所有网络缓存,
  */
-+ (void)removeHttpCache;
++ (void)removeAllHttpCache;
 
 ```
 以上就是对AFN3.x结合YYCache的简单封装,全部是类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~欢迎各路大神的批评指正以及建议.
