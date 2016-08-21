@@ -35,7 +35,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"网络缓存大小cache = %.2fMB",[PPNetworkCache getHttpCacheSize]/1024/1024.f);
+    NSLog(@"网络缓存大小cache = %.2fMB",[PPNetworkCache getAllHttpCacheSize]/1024/1024.f);
     
     //检查网络状态
     [PPNetworkHelper checkNetworkStatusWithBlock:^(PPNetworkStatus status) {
