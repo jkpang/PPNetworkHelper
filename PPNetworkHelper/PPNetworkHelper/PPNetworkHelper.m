@@ -9,6 +9,7 @@
 
 #import "PPNetworkHelper.h"
 #import <AFNetworking.h>
+#import <AFNetworkActivityIndicatorManager.h>
 
 
 #ifdef DEBUG
@@ -70,18 +71,15 @@ static BOOL _isNetwork;
                   success:(HttpRequestSuccess)success
                   failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success(responseObject);
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         failure ? failure(error) : nil;
         PPLog(@"error = %@",error);
@@ -95,7 +93,6 @@ static BOOL _isNetwork;
                   success:(HttpRequestSuccess)success
                   failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     //读取缓存
     responseCache([PPNetworkCache getHttpCacheForKey:URL]);
     
@@ -103,7 +100,6 @@ static BOOL _isNetwork;
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success(responseObject);
         //对数据进行异步缓存
@@ -111,7 +107,6 @@ static BOOL _isNetwork;
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         failure ? failure(error) : nil;
         PPLog(@"error = %@",error);
@@ -125,18 +120,15 @@ static BOOL _isNetwork;
                    success:(HttpRequestSuccess)success
                    failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success(responseObject);
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         failure ? failure(error) : nil;
         PPLog(@"error = %@",error);
@@ -151,8 +143,6 @@ static BOOL _isNetwork;
                    success:(HttpRequestSuccess)success
                    failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
     //读取缓存
     responseCache([PPNetworkCache getHttpCacheForKey:URL]);
     
@@ -160,7 +150,6 @@ static BOOL _isNetwork;
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success(responseObject);
         //对数据进行异步缓存
@@ -168,7 +157,6 @@ static BOOL _isNetwork;
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         failure ? failure(error) : nil;
         PPLog(@"error = %@",error);
@@ -187,8 +175,7 @@ static BOOL _isNetwork;
                             success:(HttpRequestSuccess)success
                             failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
+
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
@@ -202,12 +189,10 @@ static BOOL _isNetwork;
         progress ? progress(uploadProgress) : nil;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success(responseObject);
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         failure ? failure(error) : nil;
         PPLog(@"error = %@",error);
@@ -221,8 +206,6 @@ static BOOL _isNetwork;
                               success:(void(^)(NSString *))success
                               failure:(HttpRequestFailed)failure
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -249,7 +232,6 @@ static BOOL _isNetwork;
         return [NSURL fileURLWithPath:filePath];
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
         failure && error ? failure(error) : nil;
@@ -268,6 +250,9 @@ static BOOL _isNetwork;
 
 + (AFHTTPSessionManager *)createAFHTTPSessionManager
 {
+    //打开状态栏的等待菊花
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //设置请求参数的类型:HTTP (AFJSONRequestSerializer,AFHTTPRequestSerializer)
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -276,8 +261,13 @@ static BOOL _isNetwork;
     //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
-    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
+                                                                              @"text/html",
+                                                                              @"text/json",
+                                                                              @"text/plain",
+                                                                              @"text/javascript",
+                                                                              @"text/xml",
+                                                                              @"image/*"]];
     return manager;
 }
 
