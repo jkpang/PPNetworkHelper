@@ -76,7 +76,7 @@ static BOOL _isNetwork;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        success(responseObject);
+        success ? success(responseObject) : nil;
         PPLog(@"responseObject = %@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -94,18 +94,18 @@ static BOOL _isNetwork;
                   failure:(HttpRequestFailed)failure
 {
     //读取缓存
-    responseCache([PPNetworkCache getHttpCacheForKey:URL]);
+    responseCache ? responseCache([PPNetworkCache getHttpCacheForKey:URL]) : nil;
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        success(responseObject);
+        success ? success(responseObject) : nil;
         //对数据进行异步缓存
         [PPNetworkCache saveHttpCache:responseObject forKey:URL];
-        PPLog(@"responseObject = %@",responseObject);
         
+        PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         failure ? failure(error) : nil;
@@ -126,7 +126,8 @@ static BOOL _isNetwork;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        success(responseObject);
+        success ? success(responseObject) : nil;
+        
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -151,11 +152,11 @@ static BOOL _isNetwork;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        success(responseObject);
+        success ? success(responseObject) : nil;
         //对数据进行异步缓存
         [PPNetworkCache saveHttpCache:responseObject forKey:URL];
-        PPLog(@"responseObject = %@",responseObject);
         
+        PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         failure ? failure(error) : nil;
@@ -190,7 +191,7 @@ static BOOL _isNetwork;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        success(responseObject);
+        success ? success(responseObject) : nil;
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
