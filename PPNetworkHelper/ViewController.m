@@ -10,7 +10,7 @@
 #import "PPNetworkHelper.h"
 
 
-static NSString *const dataUrl = @"http://api.douban.com/v2/movie/top250?apikey=02d830457f4a8f6d088890d07ddfae47";
+static NSString *const dataUrl = @"http://www.qinto.com/wap/index.php?ctl=article_cate&act=api_app_getarticle_cate&num=1&p=7";
 static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4";
 
 @interface ViewController ()
