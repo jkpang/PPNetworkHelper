@@ -154,9 +154,7 @@
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
-            
            //请求成功
-     
         } failure:^(NSError *error) {
             //请求失败
         }];
@@ -165,13 +163,9 @@
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
-            
           //加载缓存数据
-            
         } success:^(id responseObject) {
-            
             //请求成功
-            
         } failure:^(NSError *error) {
             //请求失败
         }];
