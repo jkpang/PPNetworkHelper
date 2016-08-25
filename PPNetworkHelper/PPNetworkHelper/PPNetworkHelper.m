@@ -71,22 +71,23 @@ static BOOL _isNetwork;
                   success:(HttpRequestSuccess)success
                   failure:(HttpRequestFailed)failure
 {
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
-    return [manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        success ? success(responseObject) : nil;
-        PPLog(@"responseObject = %@",responseObject);
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        failure ? failure(error) : nil;
-        PPLog(@"error = %@",error);
-    }];
+    return [self GET:URL parameters:parameters responseCache:nil success:success failure:failure];
 }
 
+
+#pragma mark - POST请求无缓存
+
++ (NSURLSessionTask *)POST:(NSString *)URL
+                parameters:(NSDictionary *)parameters
+                   success:(HttpRequestSuccess)success
+                   failure:(HttpRequestFailed)failure
+{
+    return [self POST:URL parameters:parameters responseCache:nil success:success failure:failure];
+}
+
+
 #pragma mark - GET请求自动缓存
+
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(NSDictionary *)parameters
             responseCache:(HttpRequestCache)responseCache
@@ -103,7 +104,7 @@ static BOOL _isNetwork;
         
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        [PPNetworkCache saveHttpCache:responseObject forKey:URL];
+        responseCache ? [PPNetworkCache saveHttpCache:responseObject forKey:URL] : nil;
         
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -114,30 +115,9 @@ static BOOL _isNetwork;
     }];
 }
 
-#pragma mark - POST请求无缓存
-+ (NSURLSessionTask *)POST:(NSString *)URL
-                parameters:(NSDictionary *)parameters
-                   success:(HttpRequestSuccess)success
-                   failure:(HttpRequestFailed)failure
-{
-    
-    AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
-    return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        success ? success(responseObject) : nil;
-        
-        PPLog(@"responseObject = %@",responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        failure ? failure(error) : nil;
-        PPLog(@"error = %@",error);
-    }];
-    
-}
 
 #pragma mark - POST请求自动缓存
+
 + (NSURLSessionTask *)POST:(NSString *)URL
                 parameters:(NSDictionary *)parameters
              responseCache:(HttpRequestCache)responseCache
@@ -145,7 +125,7 @@ static BOOL _isNetwork;
                    failure:(HttpRequestFailed)failure
 {
     //读取缓存
-    responseCache([PPNetworkCache getHttpCacheForKey:URL]);
+    responseCache ? responseCache([PPNetworkCache getHttpCacheForKey:URL]) : nil;
     
     AFHTTPSessionManager *manager = [self createAFHTTPSessionManager];
     return [manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -154,9 +134,10 @@ static BOOL _isNetwork;
         
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        [PPNetworkCache saveHttpCache:responseObject forKey:URL];
+        responseCache ? [PPNetworkCache saveHttpCache:responseObject forKey:URL] : nil;
         
         PPLog(@"responseObject = %@",responseObject);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         failure ? failure(error) : nil;
@@ -166,6 +147,7 @@ static BOOL _isNetwork;
 }
 
 #pragma mark - 上传图片文件
+
 + (NSURLSessionTask *)uploadWithURL:(NSString *)URL
                          parameters:(NSDictionary *)parameters
                              images:(NSArray<UIImage *> *)images
