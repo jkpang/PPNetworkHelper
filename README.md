@@ -118,7 +118,6 @@
 + (BOOL)checkNetworkStatusWithBlock:(NetworkStatus)status;
 ```
 ##二、PPNetworkCache,数据缓存部分-对YYCache超简单封装(简单到不能叫封装吧)
-###方法调用
 
 ```objc
 /**
@@ -149,6 +148,35 @@
 + (void)removeAllHttpCache;
 
 ```
+
+##三、请求示例
+###1.无缓存
+
+```objc
+[PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
+            
+           //请求成功
+     
+        } failure:^(NSError *error) {
+            //请求失败
+        }];
+```
+###2.自动缓存
+
+```objc
+[PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
+            
+          //加载缓存数据
+            
+        } success:^(id responseObject) {
+            
+            //请求成功
+            
+        } failure:^(NSError *error) {
+            //请求失败
+        }];
+```
+
 以上就是对AFN3.x结合YYCache的简单封装,全部是类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~欢迎各路大神的批评指正以及建议.
 
 ##联系方式:

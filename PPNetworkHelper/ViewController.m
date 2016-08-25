@@ -69,6 +69,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     {
         self.cacheStatus.text = @"缓存打开";
         self.cacheSwitch.on = YES;
+        
         [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
             
             self.cacheData.text = [self jsonToString:responseCache];
