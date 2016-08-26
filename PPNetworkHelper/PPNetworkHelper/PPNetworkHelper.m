@@ -33,22 +33,22 @@ static BOOL _isNetwork;
         switch (status)
         {
             case AFNetworkReachabilityStatusUnknown:
-                _status(PPNetworkStatusUnknown);
+                _status ? _status(PPNetworkStatusUnknown) : nil;
                 _isNetwork = NO;
                 PPLog(@"未知网络");
                 break;
             case AFNetworkReachabilityStatusNotReachable:
-                _status(PPNetworkStatusNotReachable);
+                _status ? _status(PPNetworkStatusNotReachable) : nil;
                 _isNetwork = NO;
                 PPLog(@"无网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
-                _status(PPNetworkStatusReachableViaWWAN);
+                _status ? _status(PPNetworkStatusReachableViaWWAN) : nil;
                 _isNetwork = YES;
                 PPLog(@"手机自带网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                _status(PPNetworkStatusReachableViaWiFi);
+                _status ? _status(PPNetworkStatusReachableViaWiFi) : nil;
                 _isNetwork = YES;
                 PPLog(@"WIFI");
                 break;
