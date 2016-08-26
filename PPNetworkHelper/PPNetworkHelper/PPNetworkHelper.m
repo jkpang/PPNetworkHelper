@@ -20,7 +20,7 @@
 
 
 @implementation PPNetworkHelper
-static AFHTTPSessionManager *_manager;
+
 static NetworkStatus _status;
 static BOOL _isNetwork;
 
