@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.version      = "0.1.0"
   s.summary      = "对AFNetworking 3.x 与YYCache的二次封装,存取超简单,告别FMDB!"
 
-  s.homepage     = "https://github.com/jkpang/PPNetworkHelper"
+  s.homepage     = "https://github.com/jkpang/PPNetworkHelper.git"
  
   s.license      = { :type => "MIT", :file => "LICENSE" }
 
