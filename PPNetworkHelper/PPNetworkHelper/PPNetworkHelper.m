@@ -58,9 +58,13 @@ static BOOL _isNetwork;
     
 }
 
-+ (BOOL)checkNetworkStatusWithBlock:(NetworkStatus)status
++ (void)checkNetworkStatusWithBlock:(NetworkStatus)status
 {
     status ? _status = status : nil;
+}
+
++ (BOOL)currentNetworkStatus
+{
     return _isNetwork;
 }
 
