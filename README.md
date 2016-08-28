@@ -14,155 +14,9 @@ first
 then
 `pod install或pod install --no-repo-update`
 
-##一、PPNetworkHelper,网络请求部分,对AFN3.x的简单封装
-###1.GET请求-无缓存
-
-```objc
-/**
- *  GET请求,无缓存
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (__kindof NSURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-
-```
-###2.GET请求-自动缓存
-
-```objc
-/**
- *  GET请求,自动缓存
- *
- *  @param URL           请求地址
- *  @param parameters    请求参数
- *  @param responseCache 缓存数据的回调
- *  @param success       请求成功的回调
- *  @param failure       请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (__kindof NSURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-```
-###3.POST请求-无缓存
-
-```objc
-/**
- *  POST请求,无缓存
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-```
-###4.POST请求自动缓存
-
-```objc
-/**
- *  POST请求,自动缓存
- *
- *  @param URL           请求地址
- *  @param parameters    请求参数
- *  @param responseCache 缓存数据的回调
- *  @param success       请求成功的回调
- *  @param failure       请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-```
-###5.上传图片文件
-
-```objc
-/**
- *  上传图片文件
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param images     图片数组
- *  @param name       文件对应服务器上的字段
- *  @param fileName   文件名
- *  @param mimeType   图片文件的类型,例:png、jpeg(默认类型)....
- *  @param progress   上传进度信息
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancle方法
- */
-+ (__kindof NSURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-```
-###6.下载文件
-
-```objc
-/**
- *  下载文件
- *
- *  @param URL      请求地址
- *  @param fileDir  文件存储目录(默认存储目录为Download)
- *  @param progress 文件下载的进度信息
- *  @param success  下载成功的回调(回调参数filePath:文件的路径)
- *  @param failure  下载失败的回调
- *
- *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
- */
-+ (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePat
-+ h))success failure:(HttpRequestFailed)failure;
-```
-###7.监听网络状态及网络状态实时回调
-
-```objc
-/**
- *  开始监听网络状态
- */
-+ (void)startMonitoringNetwork;
-
-/**
- *  通过Block回调实时获取网络状态,也可以通过返回值进行一次性判断
- */
-+ (BOOL)checkNetworkStatusWithBlock:(NetworkStatus)status;
-```
-##二、PPNetworkCache,数据缓存部分-对YYCache超简单封装(简单到不能叫封装吧)
-
-```objc
-/**
- *  缓存网络数据
- *
- *  @param responseCache 服务器返回的数据
- *  @param key           缓存数据对应的key值,推荐填入请求的URL
- */
-+ (void)saveHttpCache:(id)httpCache forKey:(NSString *)key;
-
-/**
- *  取出缓存的数据
- *
- *  @param key 根据存入时候填入的key值来取出对应的数据
- *
- *  @return 缓存的数据
- */
-+ (id)getHttpCacheForKey:(NSString *)key;
-
-/**
- *  获取网络缓存的总大小 bytes(字节)
- */
-+ (NSInteger)getAllHttpCacheSize;
-
-/**
- *  删除所有网络缓存,
- */
-+ (void)removeAllHttpCache;
-
-```
-
-##三、请求示例
-###1.无缓存
-
+##Usage 使用方法
+###1. 无自动缓存(GET与POST请求用法相同)
+####1.1 无缓存
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
            //请求成功
@@ -170,7 +24,18 @@ then
             //请求失败
         }];
 ```
-###2.自动缓存
+####1.2 无缓存,手动缓存
+
+```objc
+[PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
+           //请求成功
+           //手动缓存
+           [PPNetworkCache saveHttpCache:responseObject forKey:url];
+        } failure:^(NSError *error) {
+            //请求失败
+        }];
+```
+###2. 自动缓存(GET与POST请求用法相同)
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
@@ -180,6 +45,76 @@ then
         } failure:^(NSError *error) {
             //请求失败
         }];
+```
+###3.图片上传(也可以上传其他文件)
+
+```objc
+[PPNetworkHelper uploadWithURL:url
+                        parameters:@{@"参数":@"参数"}
+                            images:@[@"UIImage数组"]
+                              name:@"文件对应服务器上的字段"
+                          fileName:@"文件名称"
+                          mimeType:@"图片的类型,png,jpeg"
+                          progress:^(NSProgress *progress) {
+                              //上传进度,如果要配合UI进度条显示,必须在主线程更新UI
+                              NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
+                          } success:^(id responseObject) {
+                              //上传成功
+                          } failure:^(NSError *error) {
+                              //上传失败
+                          }];
+
+```
+###4.文件下载
+
+```objc
+NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载至沙盒中的制定文件夹(默认为Download)" progress:^(NSProgress *progress) {
+        //下载进度,如果要配合UI进度条显示,必须在主线程更新UI
+        NSLog(@"下载进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
+    } success:^(NSString *filePath) {
+        //下载成功
+    } failure:^(NSError *error) {
+        //下载失败
+    }];
+    
+    //暂停下载,暂不支持断点下载
+    [task suspend];
+    //开始下载
+    [task resume];
+```
+###5.网络状态监测
+
+```objc
+	//开始监测网络状态,在判断网络状态之前调用,建议在APPDeletegate.m中的didFinishLaunchingWithOptions方法中调用
+    [PPNetworkHelper startMonitoringNetwork];
+    
+    //实时监测网络状态的变化,只要网络状态一改变,此block就会回调
+    [PPNetworkHelper checkNetworkStatusWithBlock:^(PPNetworkStatus status) {
+        switch (status) {
+            case PPNetworkStatusUnknown:          //未知网络
+                break;
+            case PPNetworkStatusNotReachable:    //无网络
+                break;
+            case PPNetworkStatusReachableViaWWAN://手机网络
+                break;
+            case PPNetworkStatusReachableViaWiFi://WIFI
+                break;
+        }
+    }];
+    
+    //网络状态一次性判断,返回值YES:有网络,NO:没有网络
+    BOOL networkStatus = [PPNetworkHelper currentNetworkStatus];
+```
+###6. 网络缓存
+####6.1 获取缓存总大小
+```objc
+NSInteger totalBytes = [PPNetworkCache getAllHttpCacheSize];
+NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
+```
+####6.2 删除所有缓存
+
+```objc
+[PPNetworkCache removeAllHttpCache];
 ```
 
 以上就是对AFN3.x结合YYCache的简单封装,全部是类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~欢迎各路大神的批评指正以及建议.
