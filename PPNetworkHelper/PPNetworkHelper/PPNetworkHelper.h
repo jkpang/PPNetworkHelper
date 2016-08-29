@@ -63,7 +63,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param success    请求成功的回调
  *  @param failure    请求失败的回调
  *
- *  @return 返回的对象可取消请求,调用cancle方法
+ *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(NSDictionary *)parameters
@@ -79,7 +79,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param success       请求成功的回调
  *  @param failure       请求失败的回调
  *
- *  @return 返回的对象可取消请求,调用cancle方法
+ *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(NSDictionary *)parameters
@@ -95,7 +95,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param success    请求成功的回调
  *  @param failure    请求失败的回调
  *
- *  @return 返回的对象可取消请求,调用cancle方法
+ *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(NSDictionary *)parameters
@@ -111,7 +111,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param success       请求成功的回调
  *  @param failure       请求失败的回调
  *
- *  @return 返回的对象可取消请求,调用cancle方法
+ *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(NSDictionary *)parameters
@@ -132,7 +132,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param success    请求成功的回调
  *  @param failure    请求失败的回调
  *
- *  @return 返回的对象可取消请求,调用cancle方法
+ *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)uploadWithURL:(NSString *)URL
                                   parameters:(NSDictionary *)parameters
