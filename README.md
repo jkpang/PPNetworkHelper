@@ -4,6 +4,10 @@
 
 ![image](https://github.com/jkpang/PPNetworkHelper/blob/master/network.gif)
 
+##Requirements 要求
+* iOS7+
+* Xcode 7+
+
 ##Installation 安装
 ###1.手动安装:
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
