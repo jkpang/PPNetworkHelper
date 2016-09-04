@@ -54,19 +54,19 @@ then
 
 ```objc
 [PPNetworkHelper uploadWithURL:url
-                        parameters:@{@"参数":@"参数"}
-                            images:@[@"UIImage数组"]
-                              name:@"文件对应服务器上的字段"
-                          fileName:@"文件名称"
-                          mimeType:@"图片的类型,png,jpeg"
-                          progress:^(NSProgress *progress) {
-                              //上传进度,如果要配合UI进度条显示,必须在主线程更新UI
-                              NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
-                          } success:^(id responseObject) {
-                              //上传成功
-                          } failure:^(NSError *error) {
-                              //上传失败
-                          }];
+                    parameters:@{@"参数":@"参数"}
+                        images:@[@"UIImage数组"]
+                          name:@"文件对应服务器上的字段"
+                      fileName:@"文件名称"
+                      mimeType:@"图片的类型,png,jpeg"
+                      progress:^(NSProgress *progress) {
+                          //上传进度,如果要配合UI进度条显示,必须在主线程更新UI
+                          NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
+                      } success:^(id responseObject) {
+                         //上传成功
+                      } failure:^(NSError *error) {
+                        //上传失败
+                      }];
 
 ```
 ###4.文件下载
