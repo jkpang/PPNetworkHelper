@@ -13,7 +13,7 @@
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
 ###2.CocoaPods安装:
 first
-`pod 'PPNetworkHelper', '~> 0.1.0'`
+`pod 'PPNetworkHelper', '~> 0.1.1'`
 
 then
 `pod install或pod install --no-repo-update`
@@ -125,6 +125,8 @@ NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ####你的star是我持续更新的动力!
 ===
 ##CocoaPods更新日志
+
+* 2016.09.05(tag:0.1.1)--多个请求的情况下采取一个共享的AFHTTPSessionManager
 * 2016.08.26(tag:0.1.0)--初始化到CocoaPods;
 
 ##联系方式:
