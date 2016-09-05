@@ -235,27 +235,32 @@ static BOOL _isNetwork;
 
 
 #pragma mark - 设置AFHTTPSessionManager相关属性
-
+/**
+ *  所有的HTTP请求共享一个AFHTTPSessionManager,原理参考地址:http://www.jianshu.com/p/5969bbb4af9f 
+ */
 + (AFHTTPSessionManager *)createAFHTTPSessionManager
 {
     //打开状态栏的等待菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    //设置请求参数的类型:HTTP (AFJSONRequestSerializer,AFHTTPRequestSerializer)
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    //设置请求的超时时间
-    manager.requestSerializer.timeoutInterval = 30.f;
-    //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    static AFHTTPSessionManager *manager;
     
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
-                                                                              @"text/html",
-                                                                              @"text/json",
-                                                                              @"text/plain",
-                                                                              @"text/javascript",
-                                                                              @"text/xml",
-                                                                              @"image/*"]];
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        
+        manager = [AFHTTPSessionManager manager];
+        //设置请求参数的类型:HTTP (AFJSONRequestSerializer,AFHTTPRequestSerializer)
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        //设置请求的超时时间
+        manager.requestSerializer.timeoutInterval = 30.f;
+        //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
+
+    });
+    
     return manager;
 }
 
