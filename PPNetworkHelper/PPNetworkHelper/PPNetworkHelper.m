@@ -175,7 +175,6 @@ static BOOL _isNetwork;
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
         progress ? progress(uploadProgress) : nil;
-        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         success ? success(responseObject) : nil;
@@ -221,8 +220,8 @@ static BOOL _isNetwork;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         
+        if(failure && error) {failure(error) ; return ;};
         success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
-        failure && error ? failure(error) : nil;
         
     }];
     

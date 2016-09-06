@@ -125,12 +125,22 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
             NSLog(@"下载进度 :%.2f%%,,%@",stauts,[NSThread currentThread]);
         } success:^(NSString *filePath) {
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"下载完成!" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"下载完成!"
+                                                                message:[NSString stringWithFormat:@"文件路径:%@",filePath]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
             [alertView show];
             [self.downloadBtn setTitle:@"重新下载" forState:UIControlStateNormal];
             NSLog(@"filePath = %@",filePath);
             
         } failure:^(NSError *error) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"下载失败"
+                                                                message:[NSString stringWithFormat:@"%@",error]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+            [alertView show];
             NSLog(@"error = %@",error);
         }];
 

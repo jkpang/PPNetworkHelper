@@ -126,7 +126,8 @@ NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ===
 ##CocoaPods更新日志
 
-* 2016.09.05(tag:0.1.1)--多个请求的情况下采取一个共享的AFHTTPSessionManager
+* 2016.09.06(tag:0.1.2)--修复在无网络进行下载时,会触发下载成功回调的Bug.
+* 2016.09.05(tag:0.1.1)--多个请求的情况下采取一个共享的AFHTTPSessionManager;
 * 2016.08.26(tag:0.1.0)--初始化到CocoaPods;
 
 ##联系方式:
