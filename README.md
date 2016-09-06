@@ -13,7 +13,7 @@
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
 ###2.CocoaPods安装:
 first
-`pod 'PPNetworkHelper', '~> 0.1.1'`
+`pod 'PPNetworkHelper', '~> 0.1.2'`
 
 then
 `pod install或pod install --no-repo-update`
