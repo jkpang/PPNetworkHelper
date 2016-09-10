@@ -2,8 +2,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "PPNetworkHelper"
-  s.version      = "0.1.2"
-  s.summary      = "对AFNetworking 3.x 与YYCache的二次封装,存取超简单,告别FMDB!"
+  s.version      = "0.2.0"
+  s.summary      = "对AFNetworking 3.x 与YYCache的二次封装,一句代码搞定数据请求与缓存,告别FMDB!"
 
   s.homepage     = "https://github.com/jkpang/PPNetworkHelper.git"
  
