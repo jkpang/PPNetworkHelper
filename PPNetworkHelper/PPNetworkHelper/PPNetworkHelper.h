@@ -75,17 +75,12 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
 @interface PPNetworkHelper : NSObject
 
 /**
- *  开始监听网络状态(此方法在整个项目中只需要调用一次)
+ *  实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
  */
-+ (void)startMonitoringNetwork;
++ (void)networkStatusWithBlock:(NetworkStatus)networkStatus;
 
 /**
- *  通过Block回调实时获取网络状态
- */
-+ (void)checkNetworkStatusWithBlock:(NetworkStatus)status;
-
-/**
- *  获取当前网络状态,有网YES,无网:NO
+ *  一次性获取当前网络状态,有网YES,无网:NO
  */
 + (BOOL)currentNetworkStatus;
 

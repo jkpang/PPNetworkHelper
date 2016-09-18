@@ -37,9 +37,10 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     
     NSLog(@"网络缓存大小cache = %.2fMB",[PPNetworkCache getAllHttpCacheSize]/1024/1024.f);
     
-    //检查网络状态
-    [PPNetworkHelper checkNetworkStatusWithBlock:^(PPNetworkStatus status) {
-        switch (status) {
+    //实时监测网络状态
+    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus networkStatus) {
+        
+        switch (networkStatus) {
             case PPNetworkStatusUnknown:
             case PPNetworkStatusNotReachable: {
                 self.networkData.text = @"没有网络";
@@ -56,6 +57,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
                 break;
             }
         }
+
     }];
 
 }

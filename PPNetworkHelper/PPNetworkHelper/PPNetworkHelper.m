@@ -21,11 +21,10 @@
 @implementation PPNetworkHelper
 
 static BOOL _isNetwork;
-static NetworkStatus _status;
 static AFHTTPSessionManager *_manager;
 
 #pragma mark - 开始监听网络
-+ (void)startMonitoringNetwork
++ (void)networkStatusWithBlock:(NetworkStatus)networkStatus
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -35,34 +34,30 @@ static AFHTTPSessionManager *_manager;
             switch (status)
             {
                 case AFNetworkReachabilityStatusUnknown:
-                    _status ? _status(PPNetworkStatusUnknown) : nil;
+                    networkStatus ? networkStatus(PPNetworkStatusUnknown) : nil;
                     _isNetwork = NO;
                     PPLog(@"未知网络");
                     break;
                 case AFNetworkReachabilityStatusNotReachable:
-                    _status ? _status(PPNetworkStatusNotReachable) : nil;
+                    networkStatus ? networkStatus(PPNetworkStatusNotReachable) : nil;
                     _isNetwork = NO;
                     PPLog(@"无网络");
                     break;
                 case AFNetworkReachabilityStatusReachableViaWWAN:
-                    _status ? _status(PPNetworkStatusReachableViaWWAN) : nil;
+                    networkStatus ? networkStatus(PPNetworkStatusReachableViaWWAN) : nil;
                     _isNetwork = YES;
                     PPLog(@"手机自带网络");
                     break;
                 case AFNetworkReachabilityStatusReachableViaWiFi:
-                    _status ? _status(PPNetworkStatusReachableViaWiFi) : nil;
+                    networkStatus ? networkStatus(PPNetworkStatusReachableViaWiFi) : nil;
                     _isNetwork = YES;
                     PPLog(@"WIFI");
                     break;
             }
         }];
+        
         [manager startMonitoring];
     });
-}
-
-+ (void)checkNetworkStatusWithBlock:(NetworkStatus)status
-{
-    status ? _status = status : nil;
 }
 
 + (BOOL)currentNetworkStatus
@@ -101,7 +96,7 @@ static AFHTTPSessionManager *_manager;
                   failure:(HttpRequestFailed)failure
 {
     //读取缓存
-    responseCache ? responseCache([PPNetworkCache getHttpCacheForKey:URL]) : nil;
+    responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
     return [_manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -109,7 +104,7 @@ static AFHTTPSessionManager *_manager;
         
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        responseCache ? [PPNetworkCache saveHttpCache:responseObject forKey:URL] : nil;
+        responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
         PPLog(@"responseObject = %@",responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -130,7 +125,7 @@ static AFHTTPSessionManager *_manager;
                    failure:(HttpRequestFailed)failure
 {
     //读取缓存
-    responseCache ? responseCache([PPNetworkCache getHttpCacheForKey:URL]) : nil;
+    responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
     return [_manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -138,7 +133,7 @@ static AFHTTPSessionManager *_manager;
         
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        responseCache ? [PPNetworkCache saveHttpCache:responseObject forKey:URL] : nil;
+        responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
         PPLog(@"responseObject = %@",responseObject);
         

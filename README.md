@@ -15,7 +15,7 @@
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
 ###2.CocoaPods安装:
 first
-`pod 'PPNetworkHelper', '~> 0.2.1'`
+`pod 'PPNetworkHelper',,:git => 'https://github.com/jkpang/PPNetworkHelper.git'`
 then
 `pod install或pod install --no-repo-update`
 
@@ -25,32 +25,32 @@ then
 ####1.1 无缓存
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
-           //请求成功
-        } failure:^(NSError *error) {
-            //请求失败
-        }];
+        //请求成功
+    } failure:^(NSError *error) {
+        //请求失败
+}];
 ```
 ####1.2 无缓存,手动缓存
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
-           //请求成功
-           //手动缓存
-           [PPNetworkCache saveHttpCache:responseObject forKey:url];
-        } failure:^(NSError *error) {
+    //请求成功
+        //手动缓存
+      [PPNetworkCache [PPNetworkCache setHttpCache:responseObject URL:url parameters:parameters]];
+    } failure:^(NSError *error) {
             //请求失败
-        }];
+}];
 ```
 ###2. 自动缓存(GET与POST请求用法相同)
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
-          //加载缓存数据
-        } success:^(id responseObject) {
-            //请求成功
-        } failure:^(NSError *error) {
-            //请求失败
-        }];
+        //加载缓存数据
+    } success:^(id responseObject) {
+        //请求成功
+    } failure:^(NSError *error) {
+        //请求失败
+}];
 ```
 ###3.图片上传(也可以上传其他文件)
 
@@ -81,21 +81,19 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
         //下载成功
     } failure:^(NSError *error) {
         //下载失败
-    }];
+}];
     
-    //暂停下载,暂不支持断点下载
-    [task suspend];
-    //开始下载
-    [task resume];
+//暂停下载,暂不支持断点下载
+[task suspend];
+//开始下载
+[task resume];
 ```
 ###5.网络状态监测
 
 ```objc
-	//开始监测网络状态,在判断网络状态之前调用,建议在APPDeletegate.m中的didFinishLaunchingWithOptions方法中调用
-    [PPNetworkHelper startMonitoringNetwork];
     
-    //实时监测网络状态的变化,只要网络状态一改变,此block就会回调
-    [PPNetworkHelper checkNetworkStatusWithBlock:^(PPNetworkStatus status) {
+    //实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
+    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus status) {
         switch (status) {
             case PPNetworkStatusUnknown:          //未知网络
                 break;
@@ -108,7 +106,7 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
         }
     }];
     
-    //网络状态一次性判断,返回值YES:有网络,NO:没有网络
+    //一次性获取当前网络状态,有网YES,无网:NO
     BOOL networkStatus = [PPNetworkHelper currentNetworkStatus];
 ```
 ###6. 网络缓存
@@ -182,9 +180,10 @@ NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ```
 
 PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~如果你有更好的建议,希望不吝赐教!
-####你的star是我持续更新的动力!
+###你的star是我持续更新的动力!
 ===
 ##CocoaPods更新日志
+* 2016.09.18(tag:0.2.5)--1.支持单个页面的多级数据缓存,2.简化网络状态监测的方法调用
 * 2016.09.12(tag:0.2.1)--小细节优化
 * 2016.09.10(tag:0.2.0)--增加网络请求设置接口(详情见:7.网络参数设置)
 * 2016.09.06(tag:0.1.2)--修复在无网络进行下载时,会触发下载成功回调的Bug.
