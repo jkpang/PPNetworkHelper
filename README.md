@@ -15,7 +15,7 @@
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
 ###2.CocoaPods安装:
 first
-`pod 'PPNetworkHelper',,:git => 'https://github.com/jkpang/PPNetworkHelper.git'`
+`pod 'PPNetworkHelper',:git => 'https://github.com/jkpang/PPNetworkHelper.git'`
 then
 `pod install或pod install --no-repo-update`
 
@@ -36,9 +36,9 @@ then
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
     //请求成功
         //手动缓存
-      [PPNetworkCache [PPNetworkCache setHttpCache:responseObject URL:url parameters:parameters]];
+    [PPNetworkCache setHttpCache:responseObject URL:url parameters:parameters];
     } failure:^(NSError *error) {
-            //请求失败
+    //请求失败
 }];
 ```
 ###2. 自动缓存(GET与POST请求用法相同)
@@ -68,7 +68,7 @@ then
                          //上传成功
                       } failure:^(NSError *error) {
                         //上传失败
-                      }];
+}];
 
 ```
 ###4.文件下载
