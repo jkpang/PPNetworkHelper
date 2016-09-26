@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lOB-8L-sSQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lOB-8L-sSQ">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,29 +20,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ouj-ei-Hef">
-                                <rect key="frame" x="16" y="57" width="343" height="206"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="网络数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HA-GH-znd">
-                                <rect key="frame" x="153" y="28" width="68" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="LjJ-AC-l7H"/>
-                                    <constraint firstAttribute="width" constant="68" id="a5x-WL-79C"/>
+                                    <constraint firstAttribute="width" constant="75" id="a5x-WL-79C"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kVt-Qw-8xM">
-                                <rect key="frame" x="16" y="313" width="343" height="206"/>
-                                <color key="backgroundColor" red="1" green="0.31586369759999999" blue="0.29369796710000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="0.31586369759999999" blue="0.29369796710000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rlo-fc-q74">
-                                <rect key="frame" x="92" y="558" width="51" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="49" id="A1m-iA-Bo7"/>
                                     <constraint firstAttribute="height" constant="31" id="neW-sq-bQG"/>
@@ -51,24 +48,21 @@
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="缓存关闭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LxE-qk-Nt0">
-                                <rect key="frame" x="16" y="563" width="68" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="68" id="lYm-dL-SFJ"/>
                                     <constraint firstAttribute="height" constant="21" id="mTW-2w-0W7"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DPM-D7-qXU">
-                                <rect key="frame" x="217" y="573" width="142" height="2"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="6zq-5F-mcj"/>
                                     <constraint firstAttribute="width" constant="142" id="gxL-c1-jIa"/>
                                 </constraints>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56o-g5-qPk">
-                                <rect key="frame" x="299" y="595" width="60" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="Ztd-mz-RrZ"/>
                                     <constraint firstAttribute="height" constant="30" id="uzy-Tp-Grr"/>
@@ -79,17 +73,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="缓存数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cnm-MJ-Xuc">
-                                <rect key="frame" x="153" y="284" width="68" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="iUG-EB-TfY"/>
-                                    <constraint firstAttribute="width" constant="68" id="vBC-Xd-67C"/>
+                                    <constraint firstAttribute="width" constant="72" id="vBC-Xd-67C"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="LxE-qk-Nt0" firstAttribute="leading" secondItem="kVt-Qw-8xM" secondAttribute="leading" id="0E9-cU-Mw2"/>
                             <constraint firstItem="ouj-ei-Hef" firstAttribute="centerX" secondItem="tBb-Am-VSH" secondAttribute="centerX" id="3Dg-Cr-c4B"/>
@@ -117,7 +110,6 @@
                             <constraint firstItem="kVt-Qw-8xM" firstAttribute="top" secondItem="ouj-ei-Hef" secondAttribute="bottom" constant="50" id="re1-ug-93C"/>
                         </constraints>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="cacheData" destination="kVt-Qw-8xM" id="kDP-j1-tv6"/>
                         <outlet property="cacheStatus" destination="LxE-qk-Nt0" id="jAF-9M-evk"/>
@@ -129,7 +121,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="moy-jV-Ten" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="605.5" y="237.5"/>
+            <point key="canvasLocation" x="604" y="237.03148425787109"/>
         </scene>
     </scenes>
 </document>
