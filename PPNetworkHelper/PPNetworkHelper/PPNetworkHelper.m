@@ -274,3 +274,47 @@ static AFHTTPSessionManager *_manager;
 }
 
 @end
+
+
+#pragma mark - NSDictionary,NSArray的分类
+/*
+ ************************************************************************************
+ *新建NSDictionary与NSArray的分类, 控制台打印json数据中的中文
+ ************************************************************************************
+ */
+
+#ifdef DEBUG
+@implementation NSArray (PP)
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    NSMutableString *strM = [NSMutableString stringWithString:@"(\n"];
+    
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [strM appendFormat:@"\t%@,\n", obj];
+    }];
+    
+    [strM appendString:@")"];
+    
+    return strM;
+}
+
+@end
+
+@implementation NSDictionary (PP)
+
+- (NSString *)descriptionWithLocale:(id)locale
+{
+    NSMutableString *strM = [NSMutableString stringWithString:@"{\n"];
+    
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [strM appendFormat:@"\t%@ = %@;\n", key, obj];
+    }];
+    
+    [strM appendString:@"}\n"];
+    
+    return strM;
+}
+@end
+#endif
+
