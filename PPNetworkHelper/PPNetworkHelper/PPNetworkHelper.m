@@ -249,12 +249,13 @@ static AFHTTPSessionManager *_manager;
 #pragma mark - 重置AFHTTPSessionManager相关属性
 + (void)setRequestSerializer:(PPRequestSerializer)requestSerializer
 {
-    _manager.requestSerializer = requestSerializer==PPRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : nil ;
+    requestSerializer==PPRequestSerializerHTTP ? _manager.requestSerializer = [AFHTTPRequestSerializer serializer] : nil ;
+    
 }
 
 + (void)setResponseSerializer:(PPResponseSerializer)responseSerializer
 {
-    _manager.responseSerializer = responseSerializer==PPResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : nil;
+    responseSerializer==PPResponseSerializerHTTP ? _manager.responseSerializer = [AFHTTPResponseSerializer serializer] : nil;
 }
 
 + (void)setRequestTimeoutInterval:(NSTimeInterval)time
@@ -271,6 +272,5 @@ static AFHTTPSessionManager *_manager;
 {
     !open ? [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:NO] : nil ;
 }
-
 
 @end
