@@ -49,7 +49,7 @@
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="缓存关闭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LxE-qk-Nt0">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="68" id="lYm-dL-SFJ"/>
+                                    <constraint firstAttribute="width" constant="70" id="lYm-dL-SFJ"/>
                                     <constraint firstAttribute="height" constant="21" id="mTW-2w-0W7"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -64,7 +64,7 @@
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56o-g5-qPk">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="Ztd-mz-RrZ"/>
+                                    <constraint firstAttribute="width" constant="64" id="Ztd-mz-RrZ"/>
                                     <constraint firstAttribute="height" constant="30" id="uzy-Tp-Grr"/>
                                 </constraints>
                                 <state key="normal" title="开始下载"/>

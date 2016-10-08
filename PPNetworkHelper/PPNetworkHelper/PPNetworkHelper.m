@@ -12,7 +12,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 
 #ifdef DEBUG
-#define PPLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#define PPLog(...) printf("[%s] %s [第%d行]: %s\n", __TIME__ ,__PRETTY_FUNCTION__ ,__LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
 #else
 #define PPLog(...)
 #endif
