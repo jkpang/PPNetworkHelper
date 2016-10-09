@@ -118,11 +118,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         task = [PPNetworkHelper downloadWithURL:downloadUrl fileDir:@"Download" progress:^(NSProgress *progress) {
             
             CGFloat stauts = 100.f * progress.completedUnitCount/progress.totalUnitCount;
-            
-            //在主线程更新UI
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.progress.progress = stauts/100.f;
-            });
+            self.progress.progress = stauts/100.f;
             
             NSLog(@"下载进度 :%.2f%%,,%@",stauts,[NSThread currentThread]);
         } success:^(NSString *filePath) {

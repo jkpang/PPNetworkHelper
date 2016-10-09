@@ -168,7 +168,9 @@ static AFHTTPSessionManager *_manager;
         }];
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
-        progress ? progress(uploadProgress) : nil;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            progress ? progress(uploadProgress) : nil;
+        });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         success ? success(responseObject) : nil;
@@ -189,8 +191,11 @@ static AFHTTPSessionManager *_manager;
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
     NSURLSessionDownloadTask *downloadTask = [_manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        
         //下载进度
-        progress ? progress(downloadProgress) : nil;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            progress ? progress(downloadProgress) : nil;
+        });
         PPLog(@"下载进度:%.2f%%",100.0*downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
         
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
@@ -249,13 +254,12 @@ static AFHTTPSessionManager *_manager;
 #pragma mark - 重置AFHTTPSessionManager相关属性
 + (void)setRequestSerializer:(PPRequestSerializer)requestSerializer
 {
-    requestSerializer==PPRequestSerializerHTTP ? _manager.requestSerializer = [AFHTTPRequestSerializer serializer] : nil ;
-    
+    _manager.requestSerializer = requestSerializer==PPRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
 }
 
 + (void)setResponseSerializer:(PPResponseSerializer)responseSerializer
 {
-    responseSerializer==PPResponseSerializerHTTP ? _manager.responseSerializer = [AFHTTPResponseSerializer serializer] : nil;
+    _manager.responseSerializer = responseSerializer==PPResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
 }
 
 + (void)setRequestTimeoutInterval:(NSTimeInterval)time
@@ -270,7 +274,7 @@ static AFHTTPSessionManager *_manager;
 
 + (void)openNetworkActivityIndicator:(BOOL)open
 {
-    !open ? [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:NO] : nil ;
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:open];
 }
 
 @end
