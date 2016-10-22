@@ -9,7 +9,7 @@
 
 ##Requirements 要求
 * iOS 7+
-* Xcode 7+
+* Xcode 8+
 
 ##Installation 安装
 ###1.手动安装:
