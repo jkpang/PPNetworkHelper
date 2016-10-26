@@ -6,6 +6,29 @@
 //  Copyright © 2016年 AndyPang. All rights reserved.
 //
 
+/*
+ *********************************************************************************
+ *
+ *⭐️⭐️⭐️ 新建 PP-iOS学习交流群: 323408051 欢迎加入!!! ⭐️⭐️⭐️
+ *
+ * 如果您在使用 PPNetworkHelper 的过程中出现bug或有更好的建议,还请及时以下列方式联系我,我会及
+ * 时修复bug,解决问题.
+ *
+ * Weibo : CoderPang
+ * Email : jkpang@outlook.com
+ * QQ 群 : 323408051
+ * GitHub: https://github.com/jkpang
+ *
+ * PS:我的另外两个很好用的封装,欢迎使用!
+ * 1.一行代码获取通讯录联系人,并进行A~Z精准排序(已处理姓名所有字符的排序问题):
+ *   GitHub:https://github.com/jkpang/PPGetAddressBook
+ * 2.仿京东淘宝商品数量的加减按钮,可定制程度高,使用简单:
+ *   GitHub:https://github.com/jkpang/PPNumberButton
+ *
+ * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
+ *********************************************************************************
+ */
+
 #import "ViewController.h"
 #import "PPNetworkHelper.h"
 

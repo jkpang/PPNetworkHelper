@@ -230,7 +230,6 @@ static AFHTTPSessionManager *_manager;
     
 }
 
-
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 /**
  *  所有的HTTP请求共享一个AFHTTPSessionManager,原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
