@@ -106,7 +106,7 @@ static AFHTTPSessionManager *_manager;
         //对数据进行异步缓存
         responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
-        PPLog(@"responseObject = %@",responseObject);
+        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         failure ? failure(error) : nil;
@@ -135,7 +135,7 @@ static AFHTTPSessionManager *_manager;
         //对数据进行异步缓存
         responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
-        PPLog(@"responseObject = %@",responseObject);
+        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -174,7 +174,7 @@ static AFHTTPSessionManager *_manager;
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         success ? success(responseObject) : nil;
-        PPLog(@"responseObject = %@",responseObject);
+        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         failure ? failure(error) : nil;
@@ -229,6 +229,17 @@ static AFHTTPSessionManager *_manager;
     return downloadTask;
     
 }
+
+/**
+ *  json转字符串
+ */
++ (NSString *)jsonToString:(id)data
+{
+    if(!data) { return nil; }
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:nil];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
 
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 /**
