@@ -22,7 +22,7 @@
  * PS:我的另外两个很好用的封装,欢迎使用!
  * 1.一行代码获取通讯录联系人,并进行A~Z精准排序(已处理姓名所有字符的排序问题):
  *   GitHub:https://github.com/jkpang/PPGetAddressBook
- * 2.仿京东淘宝商品数量的加减按钮,可定制程度高,使用简单:
+ * 2.iOS中一款高度可定制性商品计数按钮(京东/淘宝/饿了么/美团外卖/百度外卖样式):
  *   GitHub:https://github.com/jkpang/PPNumberButton
  *
  * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
@@ -86,6 +86,16 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  一次性获取当前网络状态,有网YES,无网:NO
  */
 + (BOOL)currentNetworkStatus;
+
+/**
+ 取消所有HTTP请求
+ */
++ (void)cancelAllRequest;
+
+/**
+ 取消指定URL的HTTP请求
+ */
++ (void)cancelRequestWithURL:(NSString *)URL;
 
 /**
  *  GET请求,无缓存
