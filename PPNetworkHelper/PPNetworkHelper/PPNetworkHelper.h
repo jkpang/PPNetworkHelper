@@ -33,6 +33,18 @@
 #import <UIKit/UIKit.h>
 #import "PPNetworkCache.h"
 
+#ifndef kIsNetwork
+#define kIsNetwork     [PPNetworkHelper isNetwork]  // 一次性判断是否有网的宏
+#endif
+
+#ifndef kIsWWANNetwork
+#define kIsWWANNetwork [PPNetworkHelper isNetwork]  // 一次性判断是否为手机网络的宏
+#endif
+
+#ifndef kIsWiFiNetwork
+#define kIsWiFiNetwork [PPNetworkHelper isNetwork]  // 一次性判断是否为WiFi网络的宏
+#endif
+
 typedef NS_ENUM(NSUInteger, PPNetworkStatus) {
     /** 未知网络*/
     PPNetworkStatusUnknown,
@@ -78,14 +90,24 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
 @interface PPNetworkHelper : NSObject
 
 /**
- *  实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
+ 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
  */
 + (void)networkStatusWithBlock:(NetworkStatus)networkStatus;
 
 /**
- *  一次性获取当前网络状态,有网YES,无网:NO
+ 有网YES, 无网:NO
  */
-+ (BOOL)currentNetworkStatus;
++ (BOOL)isNetwork;
+
+/**
+ 手机网络:YES, 反之:NO
+ */
++ (BOOL)isWWANNetwork;
+
+/**
+ WiFi网络:YES, 反之:NO
+ */
++ (BOOL)isWiFiNetwork;
 
 /**
  取消所有HTTP请求

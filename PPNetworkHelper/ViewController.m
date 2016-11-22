@@ -82,6 +82,9 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         }
 
     }];
+    
+    // 一次性获取当前网络状态
+    [self currentNetworkStatus];
 
 }
 
@@ -125,6 +128,28 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         
     }
     
+}
+
+#pragma mark - 一次性网络状态判断
+- (void)currentNetworkStatus
+{
+    if (kIsNetwork) {
+        NSLog(@"有网络");
+        if (kIsWWANNetwork) {
+            NSLog(@"手机网络");
+        }else if (kIsWiFiNetwork){
+            NSLog(@"WiFi网络");
+        }
+    }
+    // 或
+//    if ([PPNetworkHelper isNetwork]) {
+//        NSLog(@"有网络");
+//        if ([PPNetworkHelper isWWANNetwork]) {
+//            NSLog(@"手机网络");
+//        }else if ([PPNetworkHelper isWiFiNetwork]){
+//            NSLog(@"WiFi网络");
+//        }
+//    }
 }
 
 #pragma mark - 下载

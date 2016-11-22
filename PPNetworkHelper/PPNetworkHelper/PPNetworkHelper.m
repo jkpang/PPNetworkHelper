@@ -20,8 +20,7 @@
 
 @implementation PPNetworkHelper
 
-static BOOL _isNetwork;
-static AFHTTPSessionManager *_manager;
+static AFHTTPSessionManager *_sessionManager;
 static NSMutableArray *_allSessionTask;
 
 #pragma mark - 开始监听网络
@@ -29,41 +28,47 @@ static NSMutableArray *_allSessionTask;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
-        AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
-        [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+
+        AFNetworkReachabilityManager *reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+        [reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status)
             {
                 case AFNetworkReachabilityStatusUnknown:
                     networkStatus ? networkStatus(PPNetworkStatusUnknown) : nil;
-                    _isNetwork = NO;
                     PPLog(@"未知网络");
                     break;
                 case AFNetworkReachabilityStatusNotReachable:
                     networkStatus ? networkStatus(PPNetworkStatusNotReachable) : nil;
-                    _isNetwork = NO;
                     PPLog(@"无网络");
                     break;
                 case AFNetworkReachabilityStatusReachableViaWWAN:
                     networkStatus ? networkStatus(PPNetworkStatusReachableViaWWAN) : nil;
-                    _isNetwork = YES;
                     PPLog(@"手机自带网络");
                     break;
                 case AFNetworkReachabilityStatusReachableViaWiFi:
                     networkStatus ? networkStatus(PPNetworkStatusReachableViaWiFi) : nil;
-                    _isNetwork = YES;
                     PPLog(@"WIFI");
                     break;
             }
         }];
         
-        [manager startMonitoring];
+        [reachabilityManager startMonitoring];
     });
 }
 
-+ (BOOL)currentNetworkStatus
++ (BOOL)isNetwork
 {
-    return _isNetwork;
+    return [AFNetworkReachabilityManager sharedManager].reachable;
+}
+
++ (BOOL)isWWANNetwork
+{
+    return [AFNetworkReachabilityManager sharedManager].reachableViaWWAN;
+}
+
++ (BOOL)isWiFiNetwork
+{
+    return [AFNetworkReachabilityManager sharedManager].reachableViaWiFi;
 }
 
 + (void)cancelAllRequest
@@ -127,7 +132,7 @@ static NSMutableArray *_allSessionTask;
     //读取缓存
     responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
-    NSURLSessionTask *sessionTask = [_manager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -162,7 +167,7 @@ static NSMutableArray *_allSessionTask;
     //读取缓存
     responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
-    NSURLSessionTask *sessionTask = [_manager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -198,7 +203,7 @@ static NSMutableArray *_allSessionTask;
                             failure:(HttpRequestFailed)failure
 {
     
-    NSURLSessionTask *sessionTask = [_manager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         //压缩-添加-上传图片
         [images enumerateObjectsUsingBlock:^(UIImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -239,7 +244,7 @@ static NSMutableArray *_allSessionTask;
                               failure:(HttpRequestFailed)failure
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
-    NSURLSessionDownloadTask *downloadTask = [_manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+    NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         
         //下载进度
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -307,38 +312,38 @@ static NSMutableArray *_allSessionTask;
  */
 + (void)initialize
 {
-    _manager = [AFHTTPSessionManager manager];
-    //设置请求参数的类型:JSON (AFJSONRequestSerializer,AFHTTPRequestSerializer)
-    _manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    //设置请求的超时时间
-    _manager.requestSerializer.timeoutInterval = 30.f;
-    //设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
-    _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    _sessionManager = [AFHTTPSessionManager manager];
+    // 设置请求参数的类型:JSON (AFJSONRequestSerializer,AFHTTPRequestSerializer)
+    _sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    // 设置请求的超时时间
+    _sessionManager.requestSerializer.timeoutInterval = 30.f;
+    // 设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
+    _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
-    //打开状态栏的等待菊花
+    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
+    // 打开状态栏的等待菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 }
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
 + (void)setRequestSerializer:(PPRequestSerializer)requestSerializer
 {
-    _manager.requestSerializer = requestSerializer==PPRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
+    _sessionManager.requestSerializer = requestSerializer==PPRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
 }
 
 + (void)setResponseSerializer:(PPResponseSerializer)responseSerializer
 {
-    _manager.responseSerializer = responseSerializer==PPResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
+    _sessionManager.responseSerializer = responseSerializer==PPResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
 }
 
 + (void)setRequestTimeoutInterval:(NSTimeInterval)time
 {
-    _manager.requestSerializer.timeoutInterval = time;
+    _sessionManager.requestSerializer.timeoutInterval = time;
 }
 
 + (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field
 {
-    [_manager.requestSerializer setValue:value forHTTPHeaderField:field];
+    [_sessionManager.requestSerializer setValue:value forHTTPHeaderField:field];
 }
 
 + (void)openNetworkActivityIndicator:(BOOL)open
