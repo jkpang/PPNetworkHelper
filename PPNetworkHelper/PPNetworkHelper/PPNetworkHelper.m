@@ -63,7 +63,6 @@ static NSMutableArray *_allSessionTask;
 
 + (BOOL)currentNetworkStatus
 {
-    [self networkStatusWithBlock:nil];
     return _isNetwork;
 }
 
