@@ -38,11 +38,11 @@
 #endif
 
 #ifndef kIsWWANNetwork
-#define kIsWWANNetwork [PPNetworkHelper isNetwork]  // 一次性判断是否为手机网络的宏
+#define kIsWWANNetwork [PPNetworkHelper isWWANNetwork]  // 一次性判断是否为手机网络的宏
 #endif
 
 #ifndef kIsWiFiNetwork
-#define kIsWiFiNetwork [PPNetworkHelper isNetwork]  // 一次性判断是否为WiFi网络的宏
+#define kIsWiFiNetwork [PPNetworkHelper isWiFiNetwork]  // 一次性判断是否为WiFi网络的宏
 #endif
 
 typedef NS_ENUM(NSUInteger, PPNetworkStatus) {
