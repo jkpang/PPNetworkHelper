@@ -189,7 +189,64 @@ static NSMutableArray *_allSessionTask;
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
     return sessionTask;
 }
+#pragma mark - POST请求傻瓜缓存
+/*
+ 此种缓存需要server配合,在head传入过期时间，此处默认格式：yyyy-MM-dd HH:mm:ss(与服务器协商格式，自行改变过期检测方法)
+ */
 
++ (NSURLSessionTask *)POSTRquest:(NSString *)URL
+                      parameters:(NSDictionary *)parameters refresh:(BOOL)refresh
+                         success:(HttpRequestSuccess)success
+                         failure:(HttpRequestFailed)failure
+{
+    if (!refresh) {
+        NSDictionary *localCache =[PPNetworkCache httpCacheForURL:URL parameters:parameters];
+        if (localCache) {//本地有数据，检查过期时间
+            PPLog(@"本地有数据，检查有效期..");
+            NSString *cacheTime = [localCache objectForKey:@"Expires"];
+            if (![self hasExpires:cacheTime]) {//缓存还未过期，加载本地数据后直接返回
+                PPLog(@"未过期，加载本地数据后直接返回");
+                success(localCache[@"responseObject"]);
+                return nil;
+            }
+            PPLog(@"本地数据已过期");
+        }
+    }
+    PPLog(@"发起网络请求..");
+    //发起网络请求
+    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[self allSessionTask] removeObject:task];
+        success ? success(responseObject) : nil;
+        //对数据进行异步缓存
+        PPLog(@"网络请求返回数据，对新数据进行处理..");
+        //加工网络数据，并缓存到本地
+        if (responseObject) {
+            PPLog(@"准备生成需要缓存的有效数据..");
+            if ([task.response isKindOfClass:[NSHTTPURLResponse class]]) {//获取是否缓存，缓存过期时间
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                NSString *Expires = [response.allHeaderFields objectForKey:@"Expires"];
+                NSMutableDictionary *dataToCache = [NSMutableDictionary new];
+                PPLog(@"准备生成有效期..");
+                [dataToCache setObject:Expires.length>0?Expires:[self defaultTime] forKey:@"Expires"];
+                [dataToCache setObject:responseObject forKey:@"responseObject"];
+                PPLog(@"已缓存到本地");
+                [PPNetworkCache setHttpCache:dataToCache URL:URL parameters:parameters];
+            }
+        }
+        
+        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [[self allSessionTask] removeObject:task];
+        failure ? failure(error) : nil;
+        PPLog(@"error = %@",error);
+    }];
+    // 添加最新的sessionTask到数组
+    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
+    return sessionTask;
+}
 #pragma mark - 上传图片文件
 
 + (NSURLSessionTask *)uploadWithURL:(NSString *)URL
@@ -349,6 +406,32 @@ static NSMutableArray *_allSessionTask;
 + (void)openNetworkActivityIndicator:(BOOL)open
 {
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:open];
+}
+
+//检查是否过期
++(BOOL)hasExpires:(NSString *)dataStr
+{
+    NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+    NSLocale* local =[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    [formater setLocale:local];
+    [formater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate* date = [formater dateFromString:dataStr];
+    NSTimeInterval passtime = [date timeIntervalSinceNow];
+    if (passtime>=0) {//还没到这个时间
+        return NO;
+    }
+    return YES;
+}
+//获取默认过期时间：（此处默认可用100s）
++(NSString *)defaultTime
+{
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:100];
+    NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
+    //定义格式
+    formatter.dateFormat=@"yyyy-MM-dd HH:mm:ss";
+    //时间转化为字符串
+    NSString *dateString = [formatter stringFromDate:date];
+    return [dateString copy];
 }
 
 @end
