@@ -182,7 +182,22 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
                       responseCache:(HttpRequestCache)responseCache
                             success:(HttpRequestSuccess)success
                             failure:(HttpRequestFailed)failure;
-
+/**
+ *  POST请求,根据[过期时间],来返回缓存，或请求数据
+ *  如果已有缓存不再发起请求
+ *
+ *  @param URL           请求地址
+ *  @param parameters    请求参数
+ *  @param parameters    是否刷新数据(不管是否有缓存，只要网络数据)
+ *  @param success       请求成功的回调
+ *  @param failure       请求失败的回调
+ *
+ *  @return 返回的对象可取消请求,调用cancel方法
+ */
++ (NSURLSessionTask *)POSTRquest:(NSString *)URL
+                      parameters:(NSDictionary *)parameters refresh:(BOOL)refresh
+                         success:(HttpRequestSuccess)success
+                         failure:(HttpRequestFailed)failure;
 /**
  *  上传图片文件
  *
