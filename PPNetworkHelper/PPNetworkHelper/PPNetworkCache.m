@@ -10,7 +10,7 @@
 #import "YYCache.h"
 
 @implementation PPNetworkCache
-static NSString *const NetworkResponseCache = @"NetworkResponseCache";
+static NSString *const NetworkResponseCache = @"PPNetworkResponseCache";
 static YYCache *_dataCache;
 
 
@@ -26,10 +26,14 @@ static YYCache *_dataCache;
     [_dataCache setObject:httpData forKey:cacheKey withBlock:nil];
 }
 
-+ (id)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters
++ (void)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters withBlock:(void(^)(id<NSCoding> object))block
 {
     NSString *cacheKey = [self cacheKeyWithURL:URL parameters:parameters];
-    return [_dataCache objectForKey:cacheKey];
+    [_dataCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(object);
+        });
+    }];
 }
 
 + (NSInteger)getAllHttpCacheSize
@@ -56,16 +60,6 @@ static YYCache *_dataCache;
     return cacheKey;
 }
 
-#pragma mark - 过期方法
-+ (void)saveHttpCache:(id)httpCache forKey:(NSString *)key
-{
-    [self setHttpCache:httpCache URL:key parameters:nil];
-}
-
-+ (id)getHttpCacheForKey:(NSString *)key
-{
-    return [self httpCacheForURL:key parameters:nil];
-}
 
 @end
 

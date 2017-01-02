@@ -33,7 +33,7 @@
 #import "PPNetworkHelper.h"
 
 
-static NSString *const dataUrl = @"http://www.qinto.com/wap/index.php?ctl=article_cate&act=api_app_getarticle_cate&num=1&p=7";
+static NSString *const dataUrl = @"http://www.qinto.com/wap/index.php?ctl=article_cate&act=api_app_getarticle_cate&num=1&p=1";
 static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4";
 
 @interface ViewController ()
@@ -61,7 +61,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     NSLog(@"网络缓存大小cache = %fMB",[PPNetworkCache getAllHttpCacheSize]/1024/1024.f);
     
     //实时监测网络状态
-    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus networkStatus) {
+    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatusType networkStatus) {
         
         switch (networkStatus) {
             case PPNetworkStatusUnknown:
@@ -97,7 +97,6 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     {
         self.cacheStatus.text = @"缓存打开";
         self.cacheSwitch.on = YES;
-        
         [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
             
             self.cacheData.text = [self jsonToString:responseCache];

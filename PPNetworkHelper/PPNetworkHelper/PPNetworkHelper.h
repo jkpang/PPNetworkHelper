@@ -45,7 +45,7 @@
 #define kIsWiFiNetwork [PPNetworkHelper isWiFiNetwork]  // 一次性判断是否为WiFi网络的宏
 #endif
 
-typedef NS_ENUM(NSUInteger, PPNetworkStatus) {
+typedef NS_ENUM(NSUInteger, PPNetworkStatusType) {
     /** 未知网络*/
     PPNetworkStatusUnknown,
     /** 无网络*/
@@ -71,19 +71,19 @@ typedef NS_ENUM(NSUInteger, PPResponseSerializer) {
 };
 
 /** 请求成功的Block */
-typedef void(^HttpRequestSuccess)(id responseObject);
+typedef void(^PPHttpRequestSuccess)(id responseObject);
 
 /** 请求失败的Block */
-typedef void(^HttpRequestFailed)(NSError *error);
+typedef void(^PPHttpRequestFailed)(NSError *error);
 
 /** 缓存的Block */
-typedef void(^HttpRequestCache)(id responseCache);
+typedef void(^PPHttpRequestCache)(id responseCache);
 
 /** 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小*/
-typedef void (^HttpProgress)(NSProgress *progress);
+typedef void (^PPHttpProgress)(NSProgress *progress);
 
 /** 网络状态的Block*/
-typedef void(^NetworkStatus)(PPNetworkStatus status);
+typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 
 
 
@@ -92,7 +92,7 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
 /**
  实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
  */
-+ (void)networkStatusWithBlock:(NetworkStatus)networkStatus;
++ (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus;
 
 /**
  有网YES, 无网:NO
@@ -131,8 +131,8 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(NSDictionary *)parameters
-                           success:(HttpRequestSuccess)success
-                           failure:(HttpRequestFailed)failure;
+                           success:(PPHttpRequestSuccess)success
+                           failure:(PPHttpRequestFailed)failure;
 
 /**
  *  GET请求,自动缓存
@@ -147,9 +147,9 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(NSDictionary *)parameters
-                     responseCache:(HttpRequestCache)responseCache
-                           success:(HttpRequestSuccess)success
-                           failure:(HttpRequestFailed)failure;
+                     responseCache:(PPHttpRequestCache)responseCache
+                           success:(PPHttpRequestSuccess)success
+                           failure:(PPHttpRequestFailed)failure;
 
 /**
  *  POST请求,无缓存
@@ -163,8 +163,8 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(NSDictionary *)parameters
-                            success:(HttpRequestSuccess)success
-                            failure:(HttpRequestFailed)failure;
+                            success:(PPHttpRequestSuccess)success
+                            failure:(PPHttpRequestFailed)failure;
 
 /**
  *  POST请求,自动缓存
@@ -179,9 +179,9 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(NSDictionary *)parameters
-                      responseCache:(HttpRequestCache)responseCache
-                            success:(HttpRequestSuccess)success
-                            failure:(HttpRequestFailed)failure;
+                      responseCache:(PPHttpRequestCache)responseCache
+                            success:(PPHttpRequestSuccess)success
+                            failure:(PPHttpRequestFailed)failure;
 
 /**
  *  上传图片文件
@@ -204,9 +204,9 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
                                         name:(NSString *)name
                                     fileName:(NSString *)fileName
                                     mimeType:(NSString *)mimeType
-                                    progress:(HttpProgress)progress
-                                     success:(HttpRequestSuccess)success
-                                     failure:(HttpRequestFailed)failure;
+                                    progress:(PPHttpProgress)progress
+                                     success:(PPHttpRequestSuccess)success
+                                     failure:(PPHttpRequestFailed)failure;
 
 /**
  *  下载文件
@@ -221,9 +221,9 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  */
 + (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL
                                        fileDir:(NSString *)fileDir
-                                      progress:(HttpProgress)progress
+                                      progress:(PPHttpProgress)progress
                                        success:(void(^)(NSString *filePath))success
-                                       failure:(HttpRequestFailed)failure;
+                                       failure:(PPHttpRequestFailed)failure;
 
 
 /*
@@ -279,6 +279,16 @@ typedef void(^NetworkStatus)(PPNetworkStatus status);
  *  @param open YES(打开), NO(关闭)
  */
 + (void)openNetworkActivityIndicator:(BOOL)open;
+
+/**
+ 配置自建证书的Https请求, 参考链接: http://blog.csdn.net/syg90178aw/article/details/52839103
+
+ @param cerPath 自建Https证书的路径
+ @param validatesDomainName 是否需要验证域名，默认为YES. 如果证书的域名与请求的域名不一致，需设置为NO; 即服务器使用其他可信任机构颁发
+        的证书，也可以建立连接，这个非常危险, 建议打开.validatesDomainName=NO, 主要用于这种情况:客户端请求的是子域名, 而证书上的是另外
+        一个域名。因为SSL证书上的域名是独立的,假如证书上注册的域名是www.google.com, 那么mail.google.com是无法验证通过的.
+ */
++ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath validatesDomainName:(BOOL)validatesDomainName;
 
 @end
 
