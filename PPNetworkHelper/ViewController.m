@@ -59,6 +59,9 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     // Do any additional setup after loading the view, typically from a nib.
     
     NSLog(@"网络缓存大小cache = %fMB",[PPNetworkCache getAllHttpCacheSize]/1024/1024.f);
+    /*添加请求头在项目中*/
+    NSLog(@"网络缓存大小cache = %fMB",[PPNetworkCache getAllHttpCacheSize]/1024/1024.f);
+    
     
     //实时监测网络状态
     [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatusType networkStatus) {
@@ -222,6 +225,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         return nil;
     }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
+    NSLog(@"%@",jsonData);
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
