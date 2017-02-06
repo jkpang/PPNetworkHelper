@@ -1,6 +1,6 @@
 ![image](https://github.com/jkpang/PPNetworkHelper/blob/master/Picture/PPNetworkHelper.png)
 
-![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.5.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-%40CoderPang-yellow.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
+![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.6.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-%40CoderPang-yellow.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
 
 对AFNetworking 3.x 与YYCache的二次封装,封装常见的GET、POST、文件上传/下载、网络状态监测的功能、方法接口简洁明了,并结合YYCache实现对网络数据的缓存,简单易用,不用再写FMDB那烦人的SQL语句,一句代码搞定网络数据的请求与缓存. 
 无需设置,无需插件,控制台可直接打印json中文字符,调试更方便
@@ -57,17 +57,18 @@ then
         //请求失败
 }];
 ```
-###3.图片上传(也可以上传其他文件)
+###3.单/多图片上传
 
 ```objc
-[PPNetworkHelper uploadWithURL:url
-                    parameters:@{@"参数":@"参数"}
-                        images:@[@"UIImage数组"]
+[PPNetworkHelper uploadImagesWithURL:url
+                    	parameters:@{@"参数":@"参数"}
+                        	images:@[@"UIImage数组"]
                           name:@"文件对应服务器上的字段"
-                      fileName:@"文件名称"
-                      mimeType:@"图片的类型,png,jpeg"
+                      fileNames:@"文件名称数组"
+                      imageType:@"图片的类型,png,jpeg" 
+                      imageScale:@"图片文件压缩比 范围 (0.f ~ 1.f)"
                       progress:^(NSProgress *progress) {
-                          //上传进度,如果要配合UI进度条显示,必须在主线程更新UI
+                          //上传进度
                           NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
                       } success:^(id responseObject) {
                          //上传成功
@@ -76,7 +77,23 @@ then
 }];
 
 ```
-###4.文件下载
+###4.文件上传
+```objc
+[PPNetworkHelper uploadFileWithURL:url
+                    parameters:@{@"参数":@"参数"}
+                          name:@"文件对应服务器上的字段"
+                      filePath:@"文件本地的沙盒路径"
+                      progress:^(NSProgress *progress) {
+                          //上传进度
+                          NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
+                      } success:^(id responseObject) {
+                         //上传成功
+                      } failure:^(NSError *error) {
+                        //上传失败
+}];
+
+```
+###5.文件下载
 
 ```objc
 NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载至沙盒中的制定文件夹(默认为Download)" progress:^(NSProgress *progress) {
@@ -93,7 +110,7 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
 //开始下载
 [task resume];
 ```
-###5.网络状态监测
+###6.网络状态监测
 
 ```objc
     
@@ -130,18 +147,18 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
         }
     }
 ```
-###6. 网络缓存
-####6.1 获取缓存总大小
+###7. 网络缓存
+####7.1 获取缓存总大小
 ```objc
 NSInteger totalBytes = [PPNetworkCache getAllHttpCacheSize];
 NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ```
-####6.2 删除所有缓存
+####7.2 删除所有缓存
 
 ```objc
 [PPNetworkCache removeAllHttpCache];
 ```
-###7.网络参数设置(附说明)
+###8.网络参数设置(附说明)
 
 ```objc
 /*
@@ -166,7 +183,7 @@ NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
 /**
- *  设置网络请求参数的格式:默认为JSON格式
+ *  设置网络请求参数的格式:默认为二进制格式
  *
  *  @param requestSerializer PPRequestSerializerJSON(JSON格式),PPRequestSerializerHTTP(二进制格式),
  */
@@ -213,6 +230,9 @@ PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我
 ###你的star是我持续更新的动力!
 ===
 ##CocoaPods更新日志
+* **2017.02.06(tag:0.6.0):** 
+	 1.重构 "单/多图片上传"部分;
+	 2.新增 "上传文件接口"
 * **2017.01.02(tag:0.5.0):** 
     1. 添加配置自建证书的Https请求的接口;
     2. 修复一次性网络判断需要先调网络监测方法才能生效的BUG, 现在可直接调用一次性网络判断即可生效!

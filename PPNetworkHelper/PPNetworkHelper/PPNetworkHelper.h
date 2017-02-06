@@ -26,6 +26,8 @@
  *   GitHub:https://github.com/jkpang/PPNumberButton
  *
  * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
+ *
+ * version: 0.6.0
  *********************************************************************************
  */
 
@@ -184,29 +186,52 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
                             failure:(PPHttpRequestFailed)failure;
 
 /**
- *  上传图片文件
+ *  上传文件
  *
  *  @param URL        请求地址
  *  @param parameters 请求参数
- *  @param images     图片数组
  *  @param name       文件对应服务器上的字段
- *  @param fileName   文件名
- *  @param mimeType   图片文件的类型,例:png、jpeg(默认类型)....
+ *  @param filePath   文件本地的沙盒路径
  *  @param progress   上传进度信息
  *  @param success    请求成功的回调
  *  @param failure    请求失败的回调
  *
  *  @return 返回的对象可取消请求,调用cancel方法
  */
-+ (__kindof NSURLSessionTask *)uploadWithURL:(NSString *)URL
-                                  parameters:(NSDictionary *)parameters
-                                      images:(NSArray<UIImage *> *)images
-                                        name:(NSString *)name
-                                    fileName:(NSString *)fileName
-                                    mimeType:(NSString *)mimeType
-                                    progress:(PPHttpProgress)progress
-                                     success:(PPHttpRequestSuccess)success
-                                     failure:(PPHttpRequestFailed)failure;
++ (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
+                                      parameters:(NSDictionary *)parameters
+                                            name:(NSString *)name
+                                        filePath:(NSString *)filePath
+                                        progress:(PPHttpProgress)progress
+                                         success:(PPHttpRequestSuccess)success
+                                         failure:(PPHttpRequestFailed)failure;
+
+/**
+ *  上传单/多张图片
+ *
+ *  @param URL        请求地址
+ *  @param parameters 请求参数
+ *  @param name       图片对应服务器上的字段
+ *  @param images     图片数组
+ *  @param fileNames  图片文件名数组, 可以为nil, 数组内的文件名默认为当前日期时间"yyyyMMddHHmmss"
+ *  @param imageScale 图片文件压缩比 范围 (0.f ~ 1.f)
+ *  @param imageType  图片文件的类型,例:png、jpg(默认类型)....
+ *  @param progress   上传进度信息
+ *  @param success    请求成功的回调
+ *  @param failure    请求失败的回调
+ *
+ *  @return 返回的对象可取消请求,调用cancel方法
+ */
++ (__kindof NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
+                                        parameters:(NSDictionary *)parameters
+                                              name:(NSString *)name
+                                            images:(NSArray<UIImage *> *)images
+                                         fileNames:(NSArray<NSString *> *)fileNames
+                                        imageScale:(CGFloat)imageScale
+                                         imageType:(NSString *)imageType
+                                          progress:(PPHttpProgress)progress
+                                           success:(PPHttpRequestSuccess)success
+                                           failure:(PPHttpRequestFailed)failure;
 
 /**
  *  下载文件
@@ -248,7 +273,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
 /**
- *  设置网络请求参数的格式:默认为JSON格式
+ *  设置网络请求参数的格式:默认为二进制格式
  *
  *  @param requestSerializer PPRequestSerializerJSON(JSON格式),PPRequestSerializerHTTP(二进制格式),
  */

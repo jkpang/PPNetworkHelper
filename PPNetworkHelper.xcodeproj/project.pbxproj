@@ -329,7 +329,7 @@
 				TargetAttributes = {
 					22142E251D5E096E00EE2C40 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = K6769CKV8N;
+						DevelopmentTeam = YY4NTQ7LN8;
 					};
 					22142E3E1D5E096E00EE2C40 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -538,6 +538,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YY4NTQ7LN8;
 				INFOPLIST_FILE = PPNetworkHelper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -553,6 +554,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = YY4NTQ7LN8;
 				INFOPLIST_FILE = PPNetworkHelper/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

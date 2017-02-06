@@ -17,6 +17,7 @@
 #define PPLog(...)
 #endif
 
+#define NSStringFormat(format,...) [NSString stringWithFormat:format,##__VA_ARGS__]
 
 @implementation PPNetworkHelper
 
@@ -186,27 +187,74 @@ static NSMutableArray *_allSessionTask;
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
     return sessionTask;
 }
+#pragma mark - 上传文件
 
-#pragma mark - 上传图片文件
-
-+ (NSURLSessionTask *)uploadWithURL:(NSString *)URL
-                         parameters:(NSDictionary *)parameters
-                             images:(NSArray<UIImage *> *)images
-                               name:(NSString *)name
-                           fileName:(NSString *)fileName
-                           mimeType:(NSString *)mimeType
-                           progress:(PPHttpProgress)progress
-                            success:(PPHttpRequestSuccess)success
-                            failure:(PPHttpRequestFailed)failure
++ (NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
+                             parameters:(NSDictionary *)parameters
+                                   name:(NSString *)name
+                               filePath:(NSString *)filePath
+                               progress:(PPHttpProgress)progress
+                                success:(PPHttpRequestSuccess)success
+                                failure:(PPHttpRequestFailed)failure
 {
+    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSError *error = nil;
+        [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
+        (failure && error) ? failure(error) : nil;
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        //上传进度
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            progress ? progress(uploadProgress) : nil;
+        });
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
+        
+        [[self allSessionTask] removeObject:task];
+        success ? success(responseObject) : nil;
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        PPLog(@"error = %@",error);
+        
+        [[self allSessionTask] removeObject:task];
+        failure ? failure(error) : nil;
+    }];
     
+    // 添加sessionTask到数组
+    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
+    
+    return sessionTask;
+}
+
+#pragma mark - 上传多张图片
+
++ (NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
+                               parameters:(NSDictionary *)parameters
+                                     name:(NSString *)name
+                                   images:(NSArray<UIImage *> *)images
+                                fileNames:(NSArray<NSString *> *)fileNames
+                               imageScale:(CGFloat)imageScale
+                                imageType:(NSString *)imageType
+                                 progress:(PPHttpProgress)progress
+                                  success:(PPHttpRequestSuccess)success
+                                  failure:(PPHttpRequestFailed)failure
+{
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         //压缩-添加-上传图片
         [images enumerateObjectsUsingBlock:^(UIImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-            [formData appendPartWithFileData:imageData name:name fileName:[NSString stringWithFormat:@"%@%lu.%@",fileName,(unsigned long)idx,mimeType?mimeType:@"jpeg"] mimeType:[NSString stringWithFormat:@"image/%@",mimeType ? mimeType : @"jpeg"]];
+            // 图片经过等比压缩后得到的二进制文件
+            NSData *imageData = UIImageJPEGRepresentation(image, imageScale ?: 1.f);
+            // 默认图片的文件名, 若fileNames为nil就使用
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            NSString *imageFileName = NSStringFormat(@"%@%ld.%@",str,idx,imageType?:@"jpg");
+            
+            [formData appendPartWithFileData:imageData
+                                        name:name
+                                    fileName:fileNames ? fileNames[idx] : imageFileName
+                                    mimeType:NSStringFormat(@"image/%@",imageType ?: @"jpg")];
         }];
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
@@ -295,8 +343,7 @@ static NSMutableArray *_allSessionTask;
  */
 + (NSMutableArray *)allSessionTask
 {
-    if (!_allSessionTask)
-    {
+    if (!_allSessionTask) {
         _allSessionTask = [[NSMutableArray alloc] init];
     }
     return _allSessionTask;
