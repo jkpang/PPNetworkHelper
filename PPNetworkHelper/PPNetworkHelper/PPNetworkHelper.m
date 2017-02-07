@@ -351,9 +351,8 @@ static NSMutableArray *_allSessionTask;
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 /**
  *  所有的HTTP请求共享一个AFHTTPSessionManager,原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
- *  + (void)initialize该初始化方法在当用到此类时候只调用一次
  */
-+ (void)initialize
++ (void)load
 {
     _sessionManager = [AFHTTPSessionManager manager];
     // 设置请求的超时时间
