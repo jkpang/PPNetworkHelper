@@ -92,11 +92,6 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 @interface PPNetworkHelper : NSObject
 
 /**
- 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
- */
-+ (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus;
-
-/**
  有网YES, 无网:NO
  */
 + (BOOL)isNetwork;
@@ -117,9 +112,25 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 + (void)cancelAllRequest;
 
 /**
+ 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
+ */
++ (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus;
+
+/**
  取消指定URL的HTTP请求
  */
 + (void)cancelRequestWithURL:(NSString *)URL;
+
+/**
+ 开启日志打印 (Debug级别)
+ */
++ (void)openLog;
+
+/**
+ 关闭日志打印
+ */
++ (void)closeLog;
+
 
 /**
  *  GET请求,无缓存

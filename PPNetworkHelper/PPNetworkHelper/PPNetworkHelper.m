@@ -21,18 +21,17 @@
 
 @implementation PPNetworkHelper
 
-static AFHTTPSessionManager *_sessionManager;
+static BOOL _isOpenLog;   // 是否已开启日志打印
 static NSMutableArray *_allSessionTask;
+static AFHTTPSessionManager *_sessionManager;
 
 #pragma mark - 开始监听网络
-+ (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus
-{
++ (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
         [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            switch (status)
-            {
+            switch (status) {
                 case AFNetworkReachabilityStatusUnknown:
                     networkStatus ? networkStatus(PPNetworkStatusUnknown) : nil;
                     PPLog(@"未知网络");
@@ -51,30 +50,32 @@ static NSMutableArray *_allSessionTask;
                     break;
             }
         }];
-        
     });
 }
 
-+ (BOOL)isNetwork
-{
++ (BOOL)isNetwork {
     return [AFNetworkReachabilityManager sharedManager].reachable;
 }
 
-+ (BOOL)isWWANNetwork
-{
++ (BOOL)isWWANNetwork {
     return [AFNetworkReachabilityManager sharedManager].reachableViaWWAN;
 }
 
-+ (BOOL)isWiFiNetwork
-{
++ (BOOL)isWiFiNetwork {
     return [AFNetworkReachabilityManager sharedManager].reachableViaWiFi;
 }
 
-+ (void)cancelAllRequest
-{
++ (void)openLog {
+    _isOpenLog = YES;
+}
+
++ (void)closeLog {
+    _isOpenLog = NO;
+}
+
++ (void)cancelAllRequest {
     // 锁操作
-    @synchronized(self)
-    {
+    @synchronized(self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
             [task cancel];
         }];
@@ -82,13 +83,10 @@ static NSMutableArray *_allSessionTask;
     }
 }
 
-+ (void)cancelRequestWithURL:(NSString *)URL
-{
++ (void)cancelRequestWithURL:(NSString *)URL {
     if (!URL) { return; }
-    @synchronized (self)
-    {
+    @synchronized (self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
-            
             if ([task.currentRequest.URL.absoluteString hasPrefix:URL]) {
                 [task cancel];
                 [[self allSessionTask] removeObject:task];
@@ -97,14 +95,12 @@ static NSMutableArray *_allSessionTask;
         }];
     }
 }
-
 #pragma mark - GET请求无缓存
 
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(NSDictionary *)parameters
                   success:(PPHttpRequestSuccess)success
-                  failure:(PPHttpRequestFailed)failure
-{
+                  failure:(PPHttpRequestFailed)failure {
     return [self GET:URL parameters:parameters responseCache:nil success:success failure:failure];
 }
 
@@ -114,8 +110,7 @@ static NSMutableArray *_allSessionTask;
 + (NSURLSessionTask *)POST:(NSString *)URL
                 parameters:(NSDictionary *)parameters
                    success:(PPHttpRequestSuccess)success
-                   failure:(PPHttpRequestFailed)failure
-{
+                   failure:(PPHttpRequestFailed)failure {
     return [self POST:URL parameters:parameters responseCache:nil success:success failure:failure];
 }
 
@@ -126,24 +121,22 @@ static NSMutableArray *_allSessionTask;
                parameters:(NSDictionary *)parameters
             responseCache:(PPHttpRequestCache)responseCache
                   success:(PPHttpRequestSuccess)success
-                  failure:(PPHttpRequestFailed)failure
-{
+                  failure:(PPHttpRequestFailed)failure {
     // 读取缓存
     responseCache ? [PPNetworkCache httpCacheForURL:URL parameters:parameters withBlock:responseCache] : nil;
     
     NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
-        
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"responseObject = %@",[self jsonToString:responseObject]) : @"PPNetworkHelper已关闭日志打印");
         [[self allSessionTask] removeObject:task];
+        
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
         responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        PPLog(@"error = %@",error);
-        
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"error = %@",error) : @"PPNetworkHelper已关闭日志打印");
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
         
@@ -161,22 +154,21 @@ static NSMutableArray *_allSessionTask;
                 parameters:(NSDictionary *)parameters
              responseCache:(PPHttpRequestCache)responseCache
                    success:(PPHttpRequestSuccess)success
-                   failure:(PPHttpRequestFailed)failure
-{
+                   failure:(PPHttpRequestFailed)failure {
     //读取缓存
     responseCache ? [PPNetworkCache httpCacheForURL:URL parameters:parameters withBlock:responseCache] : nil;
     
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"responseObject = %@",[self jsonToString:responseObject]) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
         responseCache ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        PPLog(@"error = %@",error);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"error = %@",error) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
@@ -195,8 +187,8 @@ static NSMutableArray *_allSessionTask;
                                filePath:(NSString *)filePath
                                progress:(PPHttpProgress)progress
                                 success:(PPHttpRequestSuccess)success
-                                failure:(PPHttpRequestFailed)failure
-{
+                                failure:(PPHttpRequestFailed)failure {
+    
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSError *error = nil;
         [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
@@ -207,13 +199,13 @@ static NSMutableArray *_allSessionTask;
             progress ? progress(uploadProgress) : nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"responseObject = %@",[self jsonToString:responseObject]) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        PPLog(@"error = %@",error);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"error = %@",error) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
@@ -236,39 +228,38 @@ static NSMutableArray *_allSessionTask;
                                 imageType:(NSString *)imageType
                                  progress:(PPHttpProgress)progress
                                   success:(PPHttpRequestSuccess)success
-                                  failure:(PPHttpRequestFailed)failure
-{
+                                  failure:(PPHttpRequestFailed)failure {
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
-        //压缩-添加-上传图片
-        [images enumerateObjectsUsingBlock:^(UIImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
-            
+        for (NSUInteger i = 0; i < images.count; i++) {
             // 图片经过等比压缩后得到的二进制文件
-            NSData *imageData = UIImageJPEGRepresentation(image, imageScale ?: 1.f);
+            NSData *imageData = UIImageJPEGRepresentation(images[i], imageScale ?: 1.f);
             // 默认图片的文件名, 若fileNames为nil就使用
+            
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             formatter.dateFormat = @"yyyyMMddHHmmss";
             NSString *str = [formatter stringFromDate:[NSDate date]];
-            NSString *imageFileName = NSStringFormat(@"%@%ld.%@",str,idx,imageType?:@"jpg");
+            NSString *imageFileName = NSStringFormat(@"%@%ld.%@",str,i,imageType?:@"jpg");
             
             [formData appendPartWithFileData:imageData
                                         name:name
-                                    fileName:fileNames ? fileNames[idx] : imageFileName
+                                    fileName:fileNames ? NSStringFormat(@"%@.%@",fileNames[i],imageType?:@"jpg") : imageFileName
                                     mimeType:NSStringFormat(@"image/%@",imageType ?: @"jpg")];
-        }];
+        }
+        
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
         dispatch_sync(dispatch_get_main_queue(), ^{
             progress ? progress(uploadProgress) : nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        PPLog(@"responseObject = %@",[self jsonToString:responseObject]);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"responseObject = %@",[self jsonToString:responseObject]) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        PPLog(@"error = %@",error);
+        PPLog(@"%@",_isOpenLog ? NSStringFormat(@"error = %@",error) : @"PPNetworkHelper已关闭日志打印");
         
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
@@ -285,22 +276,16 @@ static NSMutableArray *_allSessionTask;
                               fileDir:(NSString *)fileDir
                              progress:(PPHttpProgress)progress
                               success:(void(^)(NSString *))success
-                              failure:(PPHttpRequestFailed)failure
-{
+                              failure:(PPHttpRequestFailed)failure {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
     NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        PPLog(@"下载进度:%.2f%%",100.0*downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
-        
         //下载进度
         dispatch_sync(dispatch_get_main_queue(), ^{
             progress ? progress(downloadProgress) : nil;
         });
-        
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-        
         //拼接缓存目录
         NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileDir ? fileDir : @"Download"];
-        
         //打开文件管理器
         NSFileManager *fileManager = [NSFileManager defaultManager];
         //创建Download目录
@@ -308,7 +293,6 @@ static NSMutableArray *_allSessionTask;
         //拼接文件路径
         NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
         
-        PPLog(@"downloadDir = %@",downloadDir);
         //返回文件位置的URL路径
         return [NSURL fileURLWithPath:filePath];
         
@@ -319,10 +303,8 @@ static NSMutableArray *_allSessionTask;
         success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
         
     }];
-    
     //开始下载
     [downloadTask resume];
-    
     // 添加sessionTask到数组
     downloadTask ? [[self allSessionTask] addObject:downloadTask] : nil ;
     return downloadTask;
@@ -331,8 +313,7 @@ static NSMutableArray *_allSessionTask;
 /**
  *  json转字符串
  */
-+ (NSString *)jsonToString:(id)data
-{
++ (NSString *)jsonToString:(id)data {
     if(!data) { return nil; }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:nil];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -341,8 +322,7 @@ static NSMutableArray *_allSessionTask;
 /**
  存储着所有的请求task数组
  */
-+ (NSMutableArray *)allSessionTask
-{
++ (NSMutableArray *)allSessionTask {
     if (!_allSessionTask) {
         _allSessionTask = [[NSMutableArray alloc] init];
     }
@@ -352,8 +332,7 @@ static NSMutableArray *_allSessionTask;
 /**
  *  所有的HTTP请求共享一个AFHTTPSessionManager,原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
  */
-+ (void)load
-{
++ (void)load {
     _sessionManager = [AFHTTPSessionManager manager];
     // 设置请求的超时时间
     _sessionManager.requestSerializer.timeoutInterval = 30.f;
@@ -368,35 +347,28 @@ static NSMutableArray *_allSessionTask;
 }
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
-+ (void)setRequestSerializer:(PPRequestSerializer)requestSerializer
-{
++ (void)setRequestSerializer:(PPRequestSerializer)requestSerializer {
     _sessionManager.requestSerializer = requestSerializer==PPRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
 }
 
-+ (void)setResponseSerializer:(PPResponseSerializer)responseSerializer
-{
++ (void)setResponseSerializer:(PPResponseSerializer)responseSerializer {
     _sessionManager.responseSerializer = responseSerializer==PPResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
 }
 
-+ (void)setRequestTimeoutInterval:(NSTimeInterval)time
-{
++ (void)setRequestTimeoutInterval:(NSTimeInterval)time {
     _sessionManager.requestSerializer.timeoutInterval = time;
 }
 
-+ (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field
-{
++ (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
     [_sessionManager.requestSerializer setValue:value forHTTPHeaderField:field];
 }
 
-+ (void)openNetworkActivityIndicator:(BOOL)open
-{
++ (void)openNetworkActivityIndicator:(BOOL)open {
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:open];
 }
 
-+ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath validatesDomainName:(BOOL)validatesDomainName
-{
++ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath validatesDomainName:(BOOL)validatesDomainName {
     NSData *cerData = [NSData dataWithContentsOfFile:cerPath];
-    
     // 使用证书验证模式
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     // 如果需要验证自建证书(无效证书)，需要设置为YES
@@ -421,14 +393,11 @@ static NSMutableArray *_allSessionTask;
 #ifdef DEBUG
 @implementation NSArray (PP)
 
-- (NSString *)descriptionWithLocale:(id)locale
-{
+- (NSString *)descriptionWithLocale:(id)locale {
     NSMutableString *strM = [NSMutableString stringWithString:@"(\n"];
-    
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [strM appendFormat:@"\t%@,\n", obj];
     }];
-    
     [strM appendString:@")"];
     
     return strM;
@@ -438,10 +407,8 @@ static NSMutableArray *_allSessionTask;
 
 @implementation NSDictionary (PP)
 
-- (NSString *)descriptionWithLocale:(id)locale
-{
+- (NSString *)descriptionWithLocale:(id)locale {
     NSMutableString *strM = [NSMutableString stringWithString:@"{\n"];
-    
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [strM appendFormat:@"\t%@ = %@;\n", key, obj];
     }];
