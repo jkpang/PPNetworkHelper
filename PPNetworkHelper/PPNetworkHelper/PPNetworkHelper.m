@@ -122,8 +122,8 @@ static AFHTTPSessionManager *_sessionManager;
             responseCache:(PPHttpRequestCache)responseCache
                   success:(PPHttpRequestSuccess)success
                   failure:(PPHttpRequestFailed)failure {
-    // 读取缓存
-    responseCache ? [PPNetworkCache httpCacheForURL:URL parameters:parameters withBlock:responseCache] : nil;
+    //读取缓存
+    responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
     NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -156,7 +156,7 @@ static AFHTTPSessionManager *_sessionManager;
                    success:(PPHttpRequestSuccess)success
                    failure:(PPHttpRequestFailed)failure {
     //读取缓存
-    responseCache ? [PPNetworkCache httpCacheForURL:URL parameters:parameters withBlock:responseCache] : nil;
+    responseCache ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
     
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
