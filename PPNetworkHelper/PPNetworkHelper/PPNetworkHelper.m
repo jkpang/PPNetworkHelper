@@ -330,18 +330,22 @@ static AFHTTPSessionManager *_sessionManager;
 }
 #pragma mark - 初始化AFHTTPSessionManager相关属性
 /**
- *  所有的HTTP请求共享一个AFHTTPSessionManager,原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
+ 开始监测网络状态
  */
 + (void)load {
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+}
+/**
+ *  所有的HTTP请求共享一个AFHTTPSessionManager
+ *  原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
+ */
++ (void)initialize {
     _sessionManager = [AFHTTPSessionManager manager];
     // 设置请求的超时时间
     _sessionManager.requestSerializer.timeoutInterval = 30.f;
     // 设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
     _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
     _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
-    // 开始监测网络状态
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     // 打开状态栏的等待菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 }

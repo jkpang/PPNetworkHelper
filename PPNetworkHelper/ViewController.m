@@ -33,7 +33,14 @@
 #import "PPNetworkHelper.h"
 
 
-static NSString *const dataUrl = @"http://www.qinto.com/wap/index.php?ctl=article_cate&act=api_app_getarticle_cate&num=1&p=1";
+#ifdef DEBUG
+#define PPLog(...) printf("[%s] %s [第%d行]: %s\n", __TIME__ ,__PRETTY_FUNCTION__ ,__LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
+#else
+#define PPLog(...)
+#endif
+
+
+static NSString *const dataUrl = @"http://api.budejie.com/api/api_open.php";
 static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/0328/56f8ec01d9bfe_wpd.mp4";
 
 @interface ViewController ()
@@ -56,72 +63,79 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    /**
+     设置网络请求参数的格式:默认为二进制格式
+     PPRequestSerializerJSON(JSON格式),
+     PPRequestSerializerHTTP(二进制格式)
+     
+     设置方式 : [PPNetworkHelper setRequestSerializer:PPRequestSerializerHTTP];
+     */
     
-    NSLog(@"网络缓存大小cache = %fKB",[PPNetworkCache getAllHttpCacheSize]/1024.f);
+    /**
+     设置服务器响应数据格式:默认为JSON格式
+     PPResponseSerializerJSON(JSON格式),
+     PPResponseSerializerHTTP(二进制格式)
+     
+     设置方式 : [PPNetworkHelper setResponseSerializer:PPResponseSerializerJSON];
+     */
+    
+    /**
+     设置请求头 : [PPNetworkHelper setValue:@"value" forHTTPHeaderField:@"header"];
+     */
+    
     // 开启日志打印
     [PPNetworkHelper openLog];
-    //实时监测网络状态
-    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatusType networkStatus) {
-        
-        switch (networkStatus) {
-            case PPNetworkStatusUnknown:
-            case PPNetworkStatusNotReachable: {
-                self.networkData.text = @"没有网络";
-                
-                [self getData:YES url:dataUrl];
-                
-                NSLog(@"无网络,加载缓存数据");
-                break;
-            }
-            case PPNetworkStatusReachableViaWWAN:
-            case PPNetworkStatusReachableViaWiFi: {
-                [self getData:[[NSUserDefaults standardUserDefaults] boolForKey:@"isOn"] url:dataUrl];
-                NSLog(@"有网络,请求网络数据");
-                break;
-            }
-        }
-
-    }];
     
-    // 一次性获取当前网络状态
-    [self currentNetworkStatus];
-
+    // 获取网络缓存大小
+    PPLog(@"网络缓存大小cache = %fKB",[PPNetworkCache getAllHttpCacheSize]/1024.f);
+    
+    // 清理缓存 [PPNetworkCache removeAllHttpCache];
+    
+    // 实时监测网络状态
+    [self monitorNetworkStatus];
+    
+    /*
+     * 一次性获取当前网络状态
+     这里延时0.1s再执行是因为程序刚刚启动,可能相关的网络服务还没有初始化完成(也有可能是AFN的BUG),
+     导致此demo检测的网络状态不正确,这仅仅只是为了演示demo的功能性, 在实际使用中可直接使用一次性网络判断,不用延时
+     */
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self getCurrentNetworkStatus];
+    });
+    
 }
 
-#pragma  mark - 获取数据
+#pragma  mark - 获取数据请求示例 GET请求自动缓存与无缓存
 - (void)getData:(BOOL)isOn url:(NSString *)url
 {
-
-    //自动缓存
+    
+    NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
+    // 自动缓存
     if(isOn)
     {
         self.cacheStatus.text = @"缓存打开";
         self.cacheSwitch.on = YES;
-        [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
-            
+        [PPNetworkHelper GET:url parameters:para responseCache:^(id responseCache) {
+            // 1.先加载缓存数据
             self.cacheData.text = [self jsonToString:responseCache];
-            
         } success:^(id responseObject) {
-            
+            // 2.再请求网络数据
             self.networkData.text = [self jsonToString:responseObject];
-            
         } failure:^(NSError *error) {
             
         }];
         
     }
-    //无缓存
+    // 无缓存
     else
     {
         self.cacheStatus.text = @"缓存关闭";
         self.cacheSwitch.on = NO;
         self.cacheData.text = @"";
         
-        [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
-            
+        [PPNetworkHelper GET:url parameters:para success:^(id responseObject) {
             self.networkData.text = [self jsonToString:responseObject];
-            
         } failure:^(NSError *error) {
             
         }];
@@ -129,26 +143,57 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     }
     
 }
+#pragma mark - 实时监测网络状态
+- (void)monitorNetworkStatus
+{
+    // 网络状态改变一次, networkStatusWithBlock就会响应一次
+    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatusType networkStatus) {
+        
+        switch (networkStatus) {
+                // 未知网络
+            case PPNetworkStatusUnknown:
+                // 无网络
+            case PPNetworkStatusNotReachable:
+                self.networkData.text = @"没有网络";
+                [self getData:YES url:dataUrl];
+                PPLog(@"无网络,加载缓存数据");
+                break;
+                // 手机网络
+            case PPNetworkStatusReachableViaWWAN:
+                // 无线网络
+            case PPNetworkStatusReachableViaWiFi:
+                [self getData:[[NSUserDefaults standardUserDefaults] boolForKey:@"isOn"] url:dataUrl];
+                PPLog(@"有网络,请求网络数据");
+                break;
+        }
+        
+    }];
 
-#pragma mark - 一次性网络状态判断
-- (void)currentNetworkStatus
+}
+
+#pragma mark - 一次性获取当前最新网络状态
+- (void)getCurrentNetworkStatus
 {
     if (kIsNetwork) {
-        NSLog(@"有网络");
+        PPLog(@"有网络");
         if (kIsWWANNetwork) {
-            NSLog(@"手机网络");
+            PPLog(@"手机网络");
         }else if (kIsWiFiNetwork){
-            NSLog(@"WiFi网络");
+            PPLog(@"WiFi网络");
         }
+    } else {
+        PPLog(@"无网络");
     }
     // 或
 //    if ([PPNetworkHelper isNetwork]) {
-//        NSLog(@"有网络");
+//        PPLog(@"有网络");
 //        if ([PPNetworkHelper isWWANNetwork]) {
-//            NSLog(@"手机网络");
+//            PPLog(@"手机网络");
 //        }else if ([PPNetworkHelper isWiFiNetwork]){
-//            NSLog(@"WiFi网络");
+//            PPLog(@"WiFi网络");
 //        }
+//    } else {
+//        PPLog(@"无网络");
 //    }
 }
 
@@ -168,7 +213,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
             CGFloat stauts = 100.f * progress.completedUnitCount/progress.totalUnitCount;
             self.progress.progress = stauts/100.f;
             
-            NSLog(@"下载进度 :%.2f%%,,%@",stauts,[NSThread currentThread]);
+            PPLog(@"下载进度 :%.2f%%,,%@",stauts,[NSThread currentThread]);
         } success:^(NSString *filePath) {
             
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"下载完成!"
@@ -178,7 +223,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
                                                       otherButtonTitles:nil];
             [alertView show];
             [self.downloadBtn setTitle:@"重新下载" forState:UIControlStateNormal];
-            NSLog(@"filePath = %@",filePath);
+            PPLog(@"filePath = %@",filePath);
             
         } failure:^(NSError *error) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"下载失败"
@@ -187,7 +232,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
                                                       cancelButtonTitle:@"确定"
                                                       otherButtonTitles:nil];
             [alertView show];
-            NSLog(@"error = %@",error);
+            PPLog(@"error = %@",error);
         }];
 
     }
