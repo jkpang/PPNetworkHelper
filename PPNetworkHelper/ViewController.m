@@ -32,6 +32,7 @@
 #import "ViewController.h"
 #import "PPNetworkHelper.h"
 #import "PPHTTPRequest.h"
+#import "AFNetworking.h"
 
 
 #ifdef DEBUG
@@ -104,8 +105,6 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self getCurrentNetworkStatus];
     });
-    
-    
     
     [self PPHTTPRequestLayerDemo];
 }

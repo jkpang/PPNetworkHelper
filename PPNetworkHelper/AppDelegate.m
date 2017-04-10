@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "PPNetworkHelper.h"
 
 @interface AppDelegate ()
 
