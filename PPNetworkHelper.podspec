@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "PPNetworkHelper"
-  s.version      = "0.7.0"
+  s.version      = "0.8.0"
   s.summary      = "AFNetworking 3.x 与YYCache封装,一句代码搞定数据请求与缓存,告别FMDB!控制台直接打印json中文字符,调试更方便"
 
   s.homepage     = "https://github.com/jkpang/PPNetworkHelper.git"
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.author       = { "jkpang" => "jkpang@outlook.com" }
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "7.0"
 
   s.source       = { :git => "https://github.com/jkpang/PPNetworkHelper.git", :tag => s.version.to_s }
 
