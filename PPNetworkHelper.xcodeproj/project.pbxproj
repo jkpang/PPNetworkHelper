@@ -38,6 +38,7 @@
 		224086731D70759C007E4E15 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 224086721D70759C007E4E15 /* libsqlite3.0.tbd */; };
 		22BEDC4B1D64B67100A72128 /* PPNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BEDC481D64B67100A72128 /* PPNetworkCache.m */; };
 		22BEDC4C1D64B67100A72128 /* PPNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */; };
+		35639C3F1E9B630C00FEA954 /* PPHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 35639C3E1E9B630C00FEA954 /* PPHTTPRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,9 @@
 		22BEDC481D64B67100A72128 /* PPNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkCache.m; sourceTree = "<group>"; };
 		22BEDC491D64B67100A72128 /* PPNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPNetworkHelper.h; sourceTree = "<group>"; };
 		22BEDC4A1D64B67100A72128 /* PPNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPNetworkHelper.m; sourceTree = "<group>"; };
+		35639C3A1E9B616200FEA954 /* PPInterfacedConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPInterfacedConst.h; sourceTree = "<group>"; };
+		35639C3D1E9B630C00FEA954 /* PPHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPHTTPRequest.h; sourceTree = "<group>"; };
+		35639C3E1E9B630C00FEA954 /* PPHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPHTTPRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +160,7 @@
 			children = (
 				2240862D1D7074CB007E4E15 /* vendor */,
 				22BEDC461D64B67100A72128 /* PPNetworkHelper */,
+				35639C401E9B634900FEA954 /* PPHTTPRequestLayer */,
 				22142E2C1D5E096E00EE2C40 /* AppDelegate.h */,
 				22142E2D1D5E096E00EE2C40 /* AppDelegate.m */,
 				22142E2F1D5E096E00EE2C40 /* ViewController.h */,
@@ -280,6 +285,16 @@
 			path = PPNetworkHelper;
 			sourceTree = "<group>";
 		};
+		35639C401E9B634900FEA954 /* PPHTTPRequestLayer */ = {
+			isa = PBXGroup;
+			children = (
+				35639C3A1E9B616200FEA954 /* PPInterfacedConst.h */,
+				35639C3D1E9B630C00FEA954 /* PPHTTPRequest.h */,
+				35639C3E1E9B630C00FEA954 /* PPHTTPRequest.m */,
+			);
+			name = PPHTTPRequestLayer;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -401,6 +416,7 @@
 				2240865C1D7074EA007E4E15 /* AFAutoPurgingImageCache.m in Sources */,
 				224086561D7074EA007E4E15 /* AFSecurityPolicy.m in Sources */,
 				224086541D7074EA007E4E15 /* AFHTTPSessionManager.m in Sources */,
+				35639C3F1E9B630C00FEA954 /* PPHTTPRequest.m in Sources */,
 				2240865D1D7074EA007E4E15 /* AFImageDownloader.m in Sources */,
 				22142E2E1D5E096E00EE2C40 /* AppDelegate.m in Sources */,
 				224086641D7074EA007E4E15 /* UIWebView+AFNetworking.m in Sources */,

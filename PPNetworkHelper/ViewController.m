@@ -31,6 +31,7 @@
 
 #import "ViewController.h"
 #import "PPNetworkHelper.h"
+#import "PPHTTPRequest.h"
 
 
 #ifdef DEBUG
@@ -104,9 +105,37 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         [self getCurrentNetworkStatus];
     });
     
+    
+    
+    [self PPHTTPRequestLayerDemo];
 }
 
+/**
+ 
+ 通过封装好的网络层进行请求配 , 我目前的项目是这样做的,在工程中的 PPHTTPRequestLayer 文件夹可以看到
+ 当然,不同的项目可以有不同的做法,没有最好的做法,只有最合适的做法,
+ 这仅仅是我抛砖引玉, 希望大家能各显神通.
+ */
+- (void)PPHTTPRequestLayerDemo
+{
+    // 登陆
+    [PPHTTPRequest getLoginWithParameters:@"参数" success:^(id response) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    // 退出
+    [PPHTTPRequest getExitWithParameters:@"参数" success:^(id response) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
 #pragma  mark - 获取数据请求示例 GET请求自动缓存与无缓存
+#pragma  mark - 这里的请求只是一个演示, 在真实的项目中建议不要这样做, 具体做法可以参照PPHTTPRequestLayer文件夹的例子
 - (void)getData:(BOOL)isOn url:(NSString *)url
 {
     

@@ -1,33 +1,33 @@
 ![image](https://github.com/jkpang/PPNetworkHelper/blob/master/Picture/PPNetworkHelper.png)
 
-![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.7.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-%40CoderPang-yellow.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
+![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.8.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-%40CoderPang-yellow.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
 
 对AFNetworking 3.x 与YYCache的二次封装,封装常见的GET、POST、文件上传/下载、网络状态监测的功能、方法接口简洁明了,并结合YYCache实现对网络数据的缓存,简单易用,不用再写FMDB那烦人的SQL语句,一句代码搞定网络数据的请求与缓存. 
 无需设置,无需插件,控制台可直接打印json中文字符,调试更方便
 
-###新建 PP-iOS学习交流群 : 323408051 有关于PP系列封装的问题和iOS技术可以在此群讨论
+### 新建 PP-iOS学习交流群 : 323408051 有关于PP系列封装的问题和iOS技术可以在此群讨论
 
 [简书地址](http://www.jianshu.com/p/c695d20d95cb) ;
 
 ![image](https://github.com/jkpang/PPNetworkHelper/blob/master/Picture/network.gif)
 
-##Requirements 要求
+## Requirements 要求
 * iOS 7+
 * Xcode 8+
 
-##Installation 安装
-###1.手动安装:
+## Installation 安装
+### 1.手动安装:
 `下载DEMO后,将子文件夹PPNetworkHelper拖入到项目中, 导入头文件PPNetworkHelper.h开始使用`
-###2.CocoaPods安装:
+### 2.CocoaPods安装:
 first
 `pod 'PPNetworkHelper',:git => 'https://github.com/jkpang/PPNetworkHelper.git'`
 then
 `pod install或pod install --no-repo-update`
 
 如果发现pod search PPNetworkHelper 不是最新版本，在终端执行pod setup命令更新本地spec镜像缓存(时间可能有点长),重新搜索就OK了
-##Usage 使用方法
-###1. 无自动缓存(GET与POST请求用法相同)
-####1.1 无缓存
+## Usage 使用方法
+### 1. 无自动缓存(GET与POST请求用法相同)
+#### 1.1 无缓存
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
         //请求成功
@@ -35,7 +35,7 @@ then
         //请求失败
 }];
 ```
-####1.2 无缓存,手动缓存
+#### 1.2 无缓存,手动缓存
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
@@ -46,7 +46,7 @@ then
     //请求失败
 }];
 ```
-###2. 自动缓存(GET与POST请求用法相同)
+### 2. 自动缓存(GET与POST请求用法相同)
 
 ```objc
 [PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
@@ -57,7 +57,7 @@ then
         //请求失败
 }];
 ```
-###3.单/多图片上传
+### 3.单/多图片上传
 
 ```objc
 [PPNetworkHelper uploadImagesWithURL:url
@@ -77,7 +77,7 @@ then
 }];
 
 ```
-###4.文件上传
+### 4.文件上传
 ```objc
 [PPNetworkHelper uploadFileWithURL:url
                     parameters:@{@"参数":@"参数"}
@@ -93,7 +93,7 @@ then
 }];
 
 ```
-###5.文件下载
+### 5.文件下载
 
 ```objc
 NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载至沙盒中的制定文件夹(默认为Download)" progress:^(NSProgress *progress) {
@@ -110,7 +110,7 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
 //开始下载
 [task resume];
 ```
-###6.网络状态监测
+### 6.网络状态监测
 
 ```objc
     
@@ -147,18 +147,18 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
         }
     }
 ```
-###7. 网络缓存
-####7.1 获取缓存总大小
+### 7. 网络缓存
+#### 7.1 获取缓存总大小
 ```objc
 NSInteger totalBytes = [PPNetworkCache getAllHttpCacheSize];
 NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ```
-####7.2 删除所有缓存
+#### 7.2 删除所有缓存
 
 ```objc
 [PPNetworkCache removeAllHttpCache];
 ```
-###8.网络参数设置(附说明)
+### 8.网络参数设置(附说明)
 
 ```objc
 /*
@@ -227,44 +227,50 @@ NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ```
 
 PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我一句一句地写SQLite啦~~~如果你有更好的建议,希望不吝赐教!
-###你的star是我持续更新的动力!
+### 你的star是我持续更新的动力!
 ===
-##CocoaPods更新日志
-* **2017.02.15(tag:0.7.0):** 
-	 1. 新增 日志打印打开/关闭接口;
-	 2. 修复 单/多图上传BUG;
-	 3. 优化代码规范;
-* **2017.02.06(tag:0.6.0):** 
-	 1. 重构 "单/多图片上传"部分;
-	 2. 新增 "上传文件接口"
-* **2017.01.02(tag:0.5.0):** 
-    1. 添加配置自建证书的Https请求的接口;
-    2. 修复一次性网络判断需要先调网络监测方法才能生效的BUG, 现在可直接调用一次性网络判断即可生效!
-    3. 修改在POST请求时,请求参数的默认格式二进制(之前是JSON格式),**注意,如果有同学在升级此版本后导致获取不到服务器数据,请将设置请求参数格式的代码注释掉即可!**
-    4. 将NetworkStatu-->PPNetworkStatus, 避免与其他第三方库产生冲突!
-    5. 修改缓存的读取为异步读取,不会阻塞主线程;
-    6. 其他一些代码优化与修改.
-* **2016.11.22(tag:0.4.0):**
-    1. 一次性判断当前网络状态值更加准确;
-    2. 添加手机网络,WiFi的当前网络状态
-* **2016.11.18(tag:0.3.1):** 
-    1. 新增取消所有http请求;
-    2. 新增取消指定URL请求 的方法
+## CocoaPods更新日志
+* **2017.04.10(tag:0.8.0):** </br>
+	 1.新增+ (void)setAFHTTPSessionManagerProperty方法,可获得AFHTTPSessionManager实例进行相关设置;</br>
+	 2.关闭日志状态下彻底关闭日志的打印;</br>
+	 3.Demo中增加项目中常见的网络层封装,抛砖引玉, 在Demo中的PPHTTPRequestLayer文件夹可以看到;</br>
+* **2017.02.15(tag:0.7.0):** </br>
+	 1.新增 日志打印打开/关闭接口;</br>
+	 2.修复 单/多图上传BUG;</br>
+	 3.优化代码规范;
+* **2017.02.06(tag:0.6.0):** </br>
+	 1.重构 "单/多图片上传"部分;</br>
+	 2.新增 "上传文件接口"</br>
+* **2017.01.02(tag:0.5.0):** </br>
+    1.添加配置自建证书的Https请求的接口;</br>
+    2.修复一次性网络判断需要先调网络监测方法才能生效的BUG, 现在可直接调用一次性网络判断即可生效!</br>
+    3.修改在POST请求时,请求参数的默认格式二进制(之前是JSON格式),**注意,如果有同学在升级此版本后导致获取不到服务器数据,请将设置请求参数格式的代码注释掉即可!**</br>
+    4.将NetworkStatu-->PPNetworkStatus, 避免与其他第三方库产生冲突!</br>
+    5.修改缓存的读取为异步读取,不会阻塞主线程;</br>
+    6.其他一些代码优化与修改.</br>
+* **2016.11.22(tag:0.4.0):**</br>
+    1.一次性判断当前网络状态值更加准确;</br>
+    2.添加手机网络,WiFi的当前网络状态</br>
+* **2016.11.18(tag:0.3.1):** </br>
+    1.新增取消所有http请求;</br>
+    2.新增取消指定URL请求 的方法</br>
 * **2016.09.26(tag:0.3.0)--**控制台直接打印json中文字符,无需插件
-* **2016.09.18(tag:0.2.5)--**1.支持单个页面的多级数据缓存,2.简化网络状态监测的方法调用
+* **2016.09.18(tag:0.2.5)--**</br>
+  1.支持单个页面的多级数据缓存,</br>
+  2.简化网络状态监测的方法调用
 * **2016.09.12(tag:0.2.1)--**小细节优化
 * **2016.09.10(tag:0.2.0)--**增加网络请求设置接口(详情见:7.网络参数设置)
 * **2016.09.06(tag:0.1.2)--**修复在无网络进行下载时,会触发下载成功回调的Bug.
 * **2016.09.05(tag:0.1.1)--**多个请求的情况下采取一个共享的AFHTTPSessionManager;
 * **2016.08.26(tag:0.1.0)--**初始化到CocoaPods;
 
-##联系方式:
+## 联系方式:
 * Weibo : @CoderPang
 * Email : jkpang@outlook.com
 * QQ群 : 323408051
 
 ![PP-iOS学习交流群群二维码](https://github.com/jkpang/PPCounter/blob/master/PP-iOS%E5%AD%A6%E4%B9%A0%E4%BA%A4%E6%B5%81%E7%BE%A4%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
 
-##许可证
+## 许可证
 PPNetworkHelper 使用 MIT 许可证，详情见 LICENSE 文件。
 

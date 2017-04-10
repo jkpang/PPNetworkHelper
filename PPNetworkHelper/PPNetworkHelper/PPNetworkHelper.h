@@ -27,13 +27,14 @@
  *
  * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
  *
- * version: 0.7.0
+ * version: 0.8.0
  *********************************************************************************
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "PPNetworkCache.h"
+#import "AFNetworking.h"
 
 #ifndef kIsNetwork
 #define kIsNetwork     [PPNetworkHelper isNetwork]  // 一次性判断是否有网的宏
@@ -127,7 +128,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 + (void)openLog;
 
 /**
- 关闭日志打印
+ 关闭日志打印,默认关闭
  */
 + (void)closeLog;
 
@@ -143,7 +144,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
-                        parameters:(NSDictionary *)parameters
+                        parameters:(id)parameters
                            success:(PPHttpRequestSuccess)success
                            failure:(PPHttpRequestFailed)failure;
 
@@ -159,7 +160,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
-                        parameters:(NSDictionary *)parameters
+                        parameters:(id)parameters
                      responseCache:(PPHttpRequestCache)responseCache
                            success:(PPHttpRequestSuccess)success
                            failure:(PPHttpRequestFailed)failure;
@@ -175,7 +176,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(NSDictionary *)parameters
+                         parameters:(id)parameters
                             success:(PPHttpRequestSuccess)success
                             failure:(PPHttpRequestFailed)failure;
 
@@ -191,7 +192,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(NSDictionary *)parameters
+                         parameters:(id)parameters
                       responseCache:(PPHttpRequestCache)responseCache
                             success:(PPHttpRequestSuccess)success
                             failure:(PPHttpRequestFailed)failure;
@@ -210,7 +211,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
-                                      parameters:(NSDictionary *)parameters
+                                      parameters:(id)parameters
                                             name:(NSString *)name
                                         filePath:(NSString *)filePath
                                         progress:(PPHttpProgress)progress
@@ -234,7 +235,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *  @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
-                                        parameters:(NSDictionary *)parameters
+                                        parameters:(id)parameters
                                               name:(NSString *)name
                                             images:(NSArray<UIImage *> *)images
                                          fileNames:(NSArray<NSString *> *)fileNames
@@ -282,7 +283,15 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  **************************************  说明  **********************************************
  */
 
-#pragma mark - 重置AFHTTPSessionManager相关属性
+#pragma mark - 设置AFHTTPSessionManager相关属性
+#pragma mark 注意: 因为全局只有一个AFHTTPSessionManager实例,所以以下设置方式全局生效
+/**
+ 在开发中,如果以下的设置方式不满足项目的需求,就调用此方法获取AFHTTPSessionManager实例进行自定义设置
+ 
+ @param sessionManager AFHTTPSessionManager的实例
+ */
++ (void)setAFHTTPSessionManagerProperty:(void(^)(AFHTTPSessionManager *sessionManager))sessionManager;
+
 /**
  *  设置网络请求参数的格式:默认为二进制格式
  *
