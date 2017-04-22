@@ -1,6 +1,6 @@
 ![image](https://github.com/jkpang/PPNetworkHelper/blob/master/Picture/PPNetworkHelper.png)
 
-![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.8.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-%40CoderPang-yellow.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
+![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/badge/pod-v0.8.0-blue.svg) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  [![](https://img.shields.io/badge/weibo-jkpang--%E5%BA%9E-red.svg)](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
 
 对AFNetworking 3.x 与YYCache的二次封装,封装常见的GET、POST、文件上传/下载、网络状态监测的功能、方法接口简洁明了,并结合YYCache实现对网络数据的缓存,简单易用,不用再写FMDB那烦人的SQL语句,一句代码搞定网络数据的请求与缓存. 
 无需设置,无需插件,控制台可直接打印json中文字符,调试更方便
@@ -265,7 +265,7 @@ PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我
 * **2016.08.26(tag:0.1.0)--**初始化到CocoaPods;
 
 ## 联系方式:
-* Weibo : @CoderPang
+* Weibo : [@jkpang-庞]((http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1))
 * Email : jkpang@outlook.com
 * QQ群 : 323408051
 
