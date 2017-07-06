@@ -14,10 +14,11 @@
  * 如果您在使用 PPNetworkHelper 的过程中出现bug或有更好的建议,还请及时以下列方式联系我,我会及
  * 时修复bug,解决问题.
  *
- * Weibo : jkpang-庞
+ * Weibo : jkpang-庞 (http://weibo.com/jkpang )
  * Email : jkpang@outlook.com
  * QQ 群 : 323408051
  * GitHub: https://github.com/jkpang
+ * Blog  : https://www.jkpang.cn
  *
  * PS:我的另外两个很好用的封装,欢迎使用!
  * 1.一行代码获取通讯录联系人,并进行A~Z精准排序(已处理姓名所有字符的排序问题):
@@ -48,86 +49,70 @@
 #endif
 
 typedef NS_ENUM(NSUInteger, PPNetworkStatusType) {
-    /** 未知网络*/
+    /// 未知网络
     PPNetworkStatusUnknown,
-    /** 无网络*/
+    /// 无网络
     PPNetworkStatusNotReachable,
-    /** 手机网络*/
+    /// 手机网络
     PPNetworkStatusReachableViaWWAN,
-    /** WIFI网络*/
+    /// WIFI网络
     PPNetworkStatusReachableViaWiFi
 };
 
 typedef NS_ENUM(NSUInteger, PPRequestSerializer) {
-    /** 设置请求数据为JSON格式*/
+    /// 设置请求数据为JSON格式
     PPRequestSerializerJSON,
-    /** 设置请求数据为二进制格式*/
+    /// 设置请求数据为二进制格式
     PPRequestSerializerHTTP,
 };
 
 typedef NS_ENUM(NSUInteger, PPResponseSerializer) {
-    /** 设置响应数据为JSON格式*/
+    /// 设置响应数据为JSON格式
     PPResponseSerializerJSON,
-    /** 设置响应数据为二进制格式*/
+    /// 设置响应数据为二进制格式
     PPResponseSerializerHTTP,
 };
 
-/** 请求成功的Block */
+/// 请求成功的Block
 typedef void(^PPHttpRequestSuccess)(id responseObject);
 
-/** 请求失败的Block */
+/// 请求失败的Block
 typedef void(^PPHttpRequestFailed)(NSError *error);
 
-/** 缓存的Block */
+/// 缓存的Block
 typedef void(^PPHttpRequestCache)(id responseCache);
 
-/** 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小*/
+/// 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小
 typedef void (^PPHttpProgress)(NSProgress *progress);
 
-/** 网络状态的Block*/
+/// 网络状态的Block
 typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 
 @class AFHTTPSessionManager;
 @interface PPNetworkHelper : NSObject
 
-/**
- 有网YES, 无网:NO
- */
+/// 有网YES, 无网:NO
 + (BOOL)isNetwork;
 
-/**
- 手机网络:YES, 反之:NO
- */
+/// 手机网络:YES, 反之:NO
 + (BOOL)isWWANNetwork;
 
-/**
- WiFi网络:YES, 反之:NO
- */
+/// WiFi网络:YES, 反之:NO
 + (BOOL)isWiFiNetwork;
 
-/**
- 取消所有HTTP请求
- */
+/// 取消所有HTTP请求
 + (void)cancelAllRequest;
 
-/**
- 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
- */
+/// 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
 + (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus;
 
-/**
- 取消指定URL的HTTP请求
- */
+/// 取消指定URL的HTTP请求
 + (void)cancelRequestWithURL:(NSString *)URL;
 
-/**
- 开启日志打印 (Debug级别)
- */
+/// 开启日志打印 (Debug级别)
 + (void)openLog;
 
-/**
- 关闭日志打印,默认关闭
- */
+/// 关闭日志打印,默认关闭
 + (void)closeLog;
 
 
@@ -311,9 +296,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  */
 + (void)setRequestTimeoutInterval:(NSTimeInterval)time;
 
-/**
- *  设置请求头
- */
+/// 设置请求头
 + (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field;
 
 /**

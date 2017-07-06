@@ -9,41 +9,31 @@
 #import "PPNetworkCache.h"
 #import "YYCache.h"
 
+static NSString *const kPPNetworkResponseCache = @"kPPNetworkResponseCache";
+
 @implementation PPNetworkCache
-static NSString *const NetworkResponseCache = @"PPNetworkResponseCache";
-static YYCache *_dataCache;
-
-
-+ (void)initialize {
-    _dataCache = [YYCache cacheWithName:NetworkResponseCache];
-}
 
 + (void)setHttpCache:(id)httpData URL:(NSString *)URL parameters:(NSDictionary *)parameters {
     NSString *cacheKey = [self cacheKeyWithURL:URL parameters:parameters];
     //异步缓存,不会阻塞主线程
-    [_dataCache setObject:httpData forKey:cacheKey withBlock:nil];
+    [[self dataCache] setObject:httpData forKey:cacheKey withBlock:nil];
 }
 
 + (id)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters {
     NSString *cacheKey = [self cacheKeyWithURL:URL parameters:parameters];
-    return [_dataCache objectForKey:cacheKey];
-}
-
-+ (void)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters withBlock:(void(^)(id<NSCoding> object))block {
-    NSString *cacheKey = [self cacheKeyWithURL:URL parameters:parameters];
-    [_dataCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block(object);
-        });
-    }];
+    return [[self dataCache] objectForKey:cacheKey];
 }
 
 + (NSInteger)getAllHttpCacheSize {
-    return [_dataCache.diskCache totalCost];
+    return [[self dataCache].diskCache totalCost];
 }
 
 + (void)removeAllHttpCache {
-    [_dataCache.diskCache removeAllObjects];
+    [[self dataCache].diskCache removeAllObjects];
+}
+
++ (YYCache *)dataCache {
+    return [YYCache cacheWithName:kPPNetworkResponseCache];
 }
 
 + (NSString *)cacheKeyWithURL:(NSString *)URL parameters:(NSDictionary *)parameters {
