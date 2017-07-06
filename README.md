@@ -114,47 +114,43 @@ NSURLSessionTask *task = [PPNetworkHelper downloadWithURL:url fileDir:@"下载�
 ### 6.网络状态监测
 
 ```objc
+// 1.实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
+[PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus status) {
+   switch (status) {
+       case PPNetworkStatusUnknown:          //未知网络
+           break;
+       case PPNetworkStatusNotReachable:    //无网络
+           break;
+       case PPNetworkStatusReachableViaWWAN://手机网络
+           break;
+       case PPNetworkStatusReachableViaWiFi://WIFI
+           break;
+   }
+}];
     
-    // 1.实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
-    [PPNetworkHelper networkStatusWithBlock:^(PPNetworkStatus status) {
-        switch (status) {
-            case PPNetworkStatusUnknown:          //未知网络
-                break;
-            case PPNetworkStatusNotReachable:    //无网络
-                break;
-            case PPNetworkStatusReachableViaWWAN://手机网络
-                break;
-            case PPNetworkStatusReachableViaWiFi://WIFI
-                break;
-        }
-    }];
-    
-    // 2.一次性获取当前网络状态
-    if (kIsNetwork) {          
-        NSLog(@"有网络");
-        if (kIsWWANNetwork) {                    
-            NSLog(@"手机网络");
-        }else if (kIsWiFiNetwork){
-            NSLog(@"WiFi网络");
-        }
-    }
-    或
-    if ([PPNetworkHelper isNetwork]) {
-        NSLog(@"有网络");
-        if ([PPNetworkHelper isWWANNetwork]) {
-            NSLog(@"手机网络");
-        }else if ([PPNetworkHelper isWiFiNetwork]){
-            NSLog(@"WiFi网络");
-        }
-    }
+// 2.一次性获取当前网络状态
+if (kIsNetwork) {          
+   NSLog(@"有网络");
+   if (kIsWWANNetwork) {                    
+       NSLog(@"手机网络");
+   }else if (kIsWiFiNetwork){
+       NSLog(@"WiFi网络");
+   }
+} else {
+   NSLog(@"无网络");
+}
 ```
 ### 7. 网络缓存
-#### 7.1 获取缓存总大小
+#### 7.1 自动缓存的逻辑
+
+**1.从本地获取缓存(不管有无数据) --> 2.请求服务器数据 --> 3.更新本地数据**
+
+#### 7.2 获取缓存总大小
 ```objc
 NSInteger totalBytes = [PPNetworkCache getAllHttpCacheSize];
 NSLog(@"网络缓存大小cache = %.2fMB",totalBytes/1024/1024.f);
 ```
-#### 7.2 删除所有缓存
+#### 7.3 删除所有缓存
 
 ```objc
 [PPNetworkCache removeAllHttpCache];
@@ -231,44 +227,55 @@ PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我
 ### 你的star是我持续更新的动力!
 ===
 ## CocoaPods更新日志
-* **2017.04.10(tag:0.8.0):** </br>
-	 1.新增+ (void)setAFHTTPSessionManagerProperty方法,可获得AFHTTPSessionManager实例进行相关设置;</br>
-	 2.关闭日志状态下彻底关闭日志的打印;</br>
-	 3.Demo中增加项目中常见的网络层封装,抛砖引玉, 在Demo中的PPHTTPRequestLayer文件夹可以看到;</br>
-* **2017.02.15(tag:0.7.0):** </br>
-	 1.新增 日志打印打开/关闭接口;</br>
-	 2.修复 单/多图上传BUG;</br>
-	 3.优化代码规范;
-* **2017.02.06(tag:0.6.0):** </br>
-	 1.重构 "单/多图片上传"部分;</br>
-	 2.新增 "上传文件接口"</br>
-* **2017.01.02(tag:0.5.0):** </br>
-    1.添加配置自建证书的Https请求的接口;</br>
-    2.修复一次性网络判断需要先调网络监测方法才能生效的BUG, 现在可直接调用一次性网络判断即可生效!</br>
-    3.修改在POST请求时,请求参数的默认格式二进制(之前是JSON格式),**注意,如果有同学在升级此版本后导致获取不到服务器数据,请将设置请求参数格式的代码注释掉即可!**</br>
-    4.将NetworkStatu-->PPNetworkStatus, 避免与其他第三方库产生冲突!</br>
-    5.修改缓存的读取为异步读取,不会阻塞主线程;</br>
-    6.其他一些代码优化与修改.</br>
-* **2016.11.22(tag:0.4.0):**</br>
-    1.一次性判断当前网络状态值更加准确;</br>
-    2.添加手机网络,WiFi的当前网络状态</br>
-* **2016.11.18(tag:0.3.1):** </br>
-    1.新增取消所有http请求;</br>
-    2.新增取消指定URL请求 的方法</br>
-* **2016.09.26(tag:0.3.0)--**控制台直接打印json中文字符,无需插件
-* **2016.09.18(tag:0.2.5)--**</br>
-  1.支持单个页面的多级数据缓存,</br>
+
+```
+• 2017.04.10(tag:0.8.0):
+  1.新增 + (void)setAFHTTPSessionManagerProperty方法,可获得AFHTTPSessionManager实例进行相关设置;
+  2.关闭日志状态下彻底关闭日志的打印;
+  3.Demo中增加对项目中网络层的构建,抛砖引玉,在工程的PPHTTPRequestLayer文件夹可以看到;
+  
+• 2017.02.15(tag:0.7.0):
+  1.新增 日志打印打开/关闭接口;
+  2.修复 单/多图上传BUG;
+  3.优化代码规范;
+
+• 2017.02.06(tag:0.6.0):
+  1.重构 "单/多图片上传"部分
+  2.新增 "上传文件接口
+
+• 2017.01.02(tag:0.5.0):
+  1.添加配置自建证书的Https请求的接口;
+  2.修复一次性网络判断需要先调网络监测方法才能生效的BUG, 现在可直接调用一次性网络判断即可生效!
+  3.修改在POST请求时,请求参数的默认格式二进制(之前是JSON格式),**注意,如果有同学在升级此版本后导致获取不到服务器数据,请将设置请求参数格式的代码注释掉即可!
+  4.将NetworkStatu-->PPNetworkStatus, 避免与其他第三方库产生冲突!
+  5.修改缓存的读取为异步读取,不会阻塞主线程;
+  6.其他一些代码优化与修改.
+
+• 2016.11.22(tag:0.4.0):
+  1.一次性判断当前网络状态值更加准确;
+  2.添加手机网络,WiFi的当前网络状态.
+    
+• 2016.11.18(tag:0.3.1):
+  1.新增取消所有http请求;
+  2.新增取消指定URL请求 的方法.
+    
+• 2016.09.26(tag:0.3.0): 控制台直接打印json中文字符,无需插件
+• 2016.09.18(tag:0.2.5): 
+  1.支持单个页面的多级数据缓存;
   2.简化网络状态监测的方法调用
-* **2016.09.12(tag:0.2.1)--**小细节优化
-* **2016.09.10(tag:0.2.0)--**增加网络请求设置接口(详情见:7.网络参数设置)
-* **2016.09.06(tag:0.1.2)--**修复在无网络进行下载时,会触发下载成功回调的Bug.
-* **2016.09.05(tag:0.1.1)--**多个请求的情况下采取一个共享的AFHTTPSessionManager;
-* **2016.08.26(tag:0.1.0)--**初始化到CocoaPods;
+  
+• 2016.09.12(tag:0.2.1): 小细节优化
+• 2016.09.10(tag:0.2.0): 增加网络请求设置接口(详情见:7.网络参数设置)
+• 2016.09.06(tag:0.1.2): 修复在无网络进行下载时,会触发下载成功回调的Bug.
+• 2016.09.05(tag:0.1.1): 多个请求的情况下采取一个共享的AFHTTPSessionManager;
+• 2016.08.26(tag:0.1.0): 初始化到CocoaPods;
+```
 
 ## 联系方式:
 * Weibo : [@jkpang-庞](http://weibo.com/5743737098/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1)
 * Email : jkpang@outlook.com
 * QQ群 : 323408051
+* Blog  : https://www.jkpang.cn
 
 ![PP-iOS学习交流群群二维码](https://github.com/jkpang/PPCounter/blob/master/PP-iOS%E5%AD%A6%E4%B9%A0%E4%BA%A4%E6%B5%81%E7%BE%A4%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
 
