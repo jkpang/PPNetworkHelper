@@ -279,11 +279,8 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 
 #pragma mark - 缓存开关
 - (IBAction)isCache:(UISwitch *)sender {
-    
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setBool:sender.isOn forKey:@"isOn"];
-    [userDefault synchronize];
-    
+    [[NSUserDefaults standardUserDefaults] setBool:sender.isOn forKey:@"isOn"];
+
     [self getData:sender.isOn url:dataUrl];
 }
 

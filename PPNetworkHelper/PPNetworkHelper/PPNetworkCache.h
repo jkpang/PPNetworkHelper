@@ -20,12 +20,6 @@
  * GitHub: https://github.com/jkpang
  * Blog  : https://www.jkpang.cn
  *
- * PS:我的另外两个很好用的封装,欢迎使用!
- * 1.一行代码获取通讯录联系人,并进行A~Z精准排序(已处理姓名所有字符的排序问题):
- *   GitHub:https://github.com/jkpang/PPGetAddressBook
- * 2.iOS中一款高度可定制性商品计数按钮(京东/淘宝/饿了么/美团外卖/百度外卖样式):
- *   GitHub:https://github.com/jkpang/PPNumberButton
- *
  * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
  *********************************************************************************
  */
@@ -46,7 +40,7 @@
  *  @param URL        请求的URL地址
  *  @param parameters 请求的参数
  */
-+ (void)setHttpCache:(id)httpData URL:(NSString *)URL parameters:(NSDictionary *)parameters;
++ (void)setHttpCache:(id)httpData URL:(NSString *)URL parameters:(id)parameters;
 
 /**
  *  根据请求的 URL与parameters 同步取出缓存数据
@@ -56,7 +50,7 @@
  *
  *  @return 缓存的服务器数据
  */
-+ (id)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters;
++ (id)httpCacheForURL:(NSString *)URL parameters:(id)parameters;
 
 /// 获取网络缓存的总大小 bytes(字节)
 + (NSInteger)getAllHttpCacheSize;
