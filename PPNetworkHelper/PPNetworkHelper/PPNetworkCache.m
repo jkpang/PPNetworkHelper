@@ -41,10 +41,8 @@ static YYCache *_dataCache;
     if(!parameters || parameters.count == 0){return URL;};
     // 将参数字典转换成字符串
     NSData *stringData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    NSString *paraString = [[NSString alloc] initWithData:stringData encoding:NSUTF8StringEncoding];
-    NSString *cacheKey = [NSString stringWithFormat:@"%@%@",URL,paraString];
-    
-    return [NSString stringWithFormat:@"%ld",cacheKey.hash];
+    NSString *paraString = [[NSString alloc] initWithData:stringData encoding:NSUTF8StringEncoding];    
+    return [NSString stringWithFormat:@"%@%@",URL,paraString];
 }
 
 
