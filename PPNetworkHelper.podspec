@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.source_files = "PPNetworkHelper/PPNetworkHelper/*.{h,m}"
   
-  s.dependency 'AFNetworking', '~> 3.1.0'
+  s.dependency 'AFNetworking', '~> 3.2.0'
 
   s.dependency 'YYCache', '~> 1.0.4'
 
