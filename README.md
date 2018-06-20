@@ -272,7 +272,7 @@ PPNetworkHelper全部以类方法调用,使用简单,麻麻再也不用担心我
 ```
 
 ## 我的App
-- [PPHub](https://github.com/jkpang/PPHub-Feedback)：一个简洁漂亮的 GitHub iOS客户端 
+- [PPHub](https://github.com/jkpang/PPHub-Feedback)：一个简洁漂亮的 GitHub iOS客户端   
 [![App_Store](https://github.com/jkpang/PPHub-Feedback/blob/master/Resource/Download_on_the_App_Store_135x40.svg)](https://itunes.apple.com/cn/app/PPHub%20For%20GitHub/id1314212521?mt=8)
 
 ## 联系方式:
