@@ -15,7 +15,7 @@
 + (NSURLSessionTask *)getLoginWithParameters:(id)parameters success:(PPRequestSuccess)success failure:(PPRequestFailure)failure
 {
     // 将请求前缀与请求路径拼接成一个完整的URL
-    NSString *url = [NSString stringWithFormat:@"%@%@",kApiPrefix,kLogin];
+    NSString *url = [NSString stringWithFormat:@"%@%@",kApiPrefix,KLogin];
     return [self requestWithURL:url parameters:parameters success:success failure:failure];
 }
 /** 退出*/
@@ -38,11 +38,9 @@
 {
     // 在请求之前你可以统一配置你请求的相关参数 ,设置请求头, 请求参数的格式, 返回数据的格式....这样你就不需要每次请求都要设置一遍相关参数
     // 设置请求头
-    [PPNetworkHelper setValue:@"9" forHTTPHeaderField:@"fromType"];
-    
+    [PPNetworkHelper setValue:@"v1.0.0" forHTTPHeaderField:@"api-version"];
     // 发起请求
-    return [PPNetworkHelper POST:URL parameters:parameter success:^(id responseObject) {
-    
+    return   [[PPNetworkHelper shareTools] request:POST URLString:URL parameters:parameter success:^(id responseObject) {
         // 在这里你可以根据项目自定义其他一些重复操作,比如加载页面时候的等待效果, 提醒弹窗....
         success(responseObject);
         
@@ -50,6 +48,7 @@
         // 同上
         failure(error);
     }];
+    
 }
 
 @end

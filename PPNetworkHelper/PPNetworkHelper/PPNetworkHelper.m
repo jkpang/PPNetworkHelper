@@ -18,12 +18,44 @@
 #endif
 
 #define NSStringFormat(format,...) [NSString stringWithFormat:format,##__VA_ARGS__]
+//网络工具协议
+@protocol NetworkToolsProxy <NSObject>
+@optional
+- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
+                                       URLString:(NSString *)URLString
+                                      parameters:(id)parameters
+                                  uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgress
+                                downloadProgress:(nullable void (^)(NSProgress *downloadProgress)) downloadProgress
+                                         success:(void (^)(NSURLSessionDataTask *, id))success
+                                         failure:(void (^)(NSURLSessionDataTask *, NSError *))failure;
+@end
+
+@interface PPNetworkHelper()<NetworkToolsProxy>
+
+@end
 
 @implementation PPNetworkHelper
 
 static BOOL _isOpenLog;   // 是否已开启日志打印
 static NSMutableArray *_allSessionTask;
-static AFHTTPSessionManager *_sessionManager;
+static PPNetworkHelper*_sessionManager = nil;
++(instancetype)shareTools{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sessionManager = [[PPNetworkHelper alloc] init];
+        // 设置请求的超时时间
+        _sessionManager.requestSerializer.timeoutInterval = 30.f;
+        // 设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
+        _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
+        // 打开状态栏的等待菊花
+        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    });
+    
+    return _sessionManager;
+}
+
+
 
 #pragma mark - 开始监听网络
 + (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus {
@@ -73,7 +105,7 @@ static AFHTTPSessionManager *_sessionManager;
     _isOpenLog = NO;
 }
 
-+ (void)cancelAllRequest {
+- (void)cancelAllRequest {
     // 锁操作
     @synchronized(self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -83,7 +115,7 @@ static AFHTTPSessionManager *_sessionManager;
     }
 }
 
-+ (void)cancelRequestWithURL:(NSString *)URL {
+- (void)cancelRequestWithURL:(NSString *)URL {
     if (!URL) { return; }
     @synchronized (self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -96,88 +128,68 @@ static AFHTTPSessionManager *_sessionManager;
     }
 }
 
-#pragma mark - GET请求无缓存
-+ (NSURLSessionTask *)GET:(NSString *)URL
-               parameters:(id)parameters
-                  success:(PPHttpRequestSuccess)success
-                  failure:(PPHttpRequestFailed)failure {
-    return [self GET:URL parameters:parameters responseCache:nil success:success failure:failure];
+-(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
+                     success:(PPHttpRequestSuccess)success
+                     failure:(PPHttpRequestFailed)failure{
+    return [self request:method URLString:URLString parameters:(id)parameters responseCache:nil success:success failure:failure];
 }
 
-#pragma mark - POST请求无缓存
-+ (NSURLSessionTask *)POST:(NSString *)URL
-                parameters:(id)parameters
-                   success:(PPHttpRequestSuccess)success
-                   failure:(PPHttpRequestFailed)failure {
-    return [self POST:URL parameters:parameters responseCache:nil success:success failure:failure];
-}
-
-#pragma mark - GET请求自动缓存
-+ (NSURLSessionTask *)GET:(NSString *)URL
-               parameters:(id)parameters
-            responseCache:(PPHttpRequestCache)responseCache
-                  success:(PPHttpRequestSuccess)success
-                  failure:(PPHttpRequestFailed)failure {
-    //读取缓存
-    responseCache!=nil ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
+-(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
+               responseCache:(PPHttpRequestCache)responseCache
+                     success:(PPHttpRequestSuccess)success
+                     failure:(PPHttpRequestFailed)failure{
     
-    NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+    NSString *methodString = @"";
+    switch (method) {
+        case GET:
+            methodString = @"GET";
+            break;
+        case POST:
+            methodString = @"POST";
+            break;
+        case DELETE:
+            methodString = @"DELETE";
+            break;
+        case HEAD:
+            methodString = @"HEAD";
+            break;
+        case PUT:
+            methodString = @"PUT";
+            break;
+        case PATCH:
+            methodString = @"PATCH";
+            break;
+        default:
+            break;
+    }
+    
+    //读取缓存
+    responseCache!=nil ? responseCache([PPNetworkCache httpCacheForURL:URLString parameters:parameters]) : nil;
+   
+    NSURLSessionTask *sessionTask = [self dataTaskWithHTTPMethod:methodString URLString:URLString parameters:parameters uploadProgress:nil downloadProgress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+
         if (_isOpenLog) {PPLog(@"responseObject = %@",[self jsonToString:responseObject]);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        responseCache!=nil ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
+        responseCache!=nil ? [PPNetworkCache setHttpCache:responseObject URL:URLString parameters:parameters] : nil;
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         if (_isOpenLog) {PPLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
         
     }];
+    [sessionTask resume];
     // 添加sessionTask到数组
-    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
+    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
     
-    return sessionTask;
-}
-
-#pragma mark - POST请求自动缓存
-+ (NSURLSessionTask *)POST:(NSString *)URL
-                parameters:(id)parameters
-             responseCache:(PPHttpRequestCache)responseCache
-                   success:(PPHttpRequestSuccess)success
-                   failure:(PPHttpRequestFailed)failure {
-    //读取缓存
-    responseCache!=nil ? responseCache([PPNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
-    
-    NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        if (_isOpenLog) {PPLog(@"responseObject = %@",[self jsonToString:responseObject]);}
-        [[self allSessionTask] removeObject:task];
-        success ? success(responseObject) : nil;
-        //对数据进行异步缓存
-        responseCache!=nil ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        if (_isOpenLog) {PPLog(@"error = %@",error);}
-        [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
-        
-    }];
-    
-    // 添加最新的sessionTask到数组
-    sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
     return sessionTask;
 }
 
 #pragma mark - 上传文件
-+ (NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
+- (NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
                              parameters:(id)parameters
                                    name:(NSString *)name
                                filePath:(NSString *)filePath
@@ -187,7 +199,7 @@ static AFHTTPSessionManager *_sessionManager;
     
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSError *error = nil;
-        [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
+        [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath] name:name error:&error];
         (failure && error) ? failure(error) : nil;
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
@@ -214,7 +226,7 @@ static AFHTTPSessionManager *_sessionManager;
 }
 
 #pragma mark - 上传多张图片
-+ (NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
+- (NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
                                parameters:(id)parameters
                                      name:(NSString *)name
                                    images:(NSArray<UIImage *> *)images
@@ -267,7 +279,7 @@ static AFHTTPSessionManager *_sessionManager;
 }
 
 #pragma mark - 下载文件
-+ (NSURLSessionTask *)downloadWithURL:(NSString *)URL
+- (NSURLSessionTask *)downloadWithURL:(NSString *)URL
                               fileDir:(NSString *)fileDir
                              progress:(PPHttpProgress)progress
                               success:(void(^)(NSString *))success
@@ -308,7 +320,7 @@ static AFHTTPSessionManager *_sessionManager;
 /**
  *  json转字符串
  */
-+ (NSString *)jsonToString:(id)data {
+- (NSString *)jsonToString:(id)data {
     if(data == nil) { return nil; }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:nil];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -317,7 +329,7 @@ static AFHTTPSessionManager *_sessionManager;
 /**
  存储着所有的请求task数组
  */
-+ (NSMutableArray *)allSessionTask {
+- (NSMutableArray *)allSessionTask {
     if (!_allSessionTask) {
         _allSessionTask = [[NSMutableArray alloc] init];
     }
@@ -331,20 +343,11 @@ static AFHTTPSessionManager *_sessionManager;
 + (void)load {
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
-/**
- *  所有的HTTP请求共享一个AFHTTPSessionManager
- *  原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
- */
-+ (void)initialize {
-    _sessionManager = [AFHTTPSessionManager manager];
-    // 设置请求的超时时间
-    _sessionManager.requestSerializer.timeoutInterval = 30.f;
-    // 设置服务器返回结果的类型:JSON (AFJSONResponseSerializer,AFHTTPResponseSerializer)
-    _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
-    // 打开状态栏的等待菊花
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-}
+
+//+ (void)initialize {
+//    _sessionManager = [AFHTTPSessionManager manager];
+//    
+//}
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
 

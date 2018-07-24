@@ -20,25 +20,25 @@
 #ifndef PPInterfacedConst_h
 #define PPInterfacedConst_h
 
-#define DevelopSever 0
-#define TestSever    1
+#define DevelopSever 1
+#define TestSever    0
 #define ProductSever 0
 
 #if DevelopSever
 /** 接口前缀-开发服务器*/
-NSString *const kApiPrefix = @"接口服务器的请求前缀 例: http://192.168.10.10:8080";
+NSString *const kApiPrefix = @"";
 #elif TestSever
 /** 接口前缀-测试服务器*/
-NSString *const kApiPrefix = @"https://www.baidu.com";
+NSString *const kApiPrefix = @"";
 #elif ProductSever
 /** 接口前缀-生产服务器*/
-NSString *const kApiPrefix = @"https://www.baidu.com";
+NSString *const kApiPrefix = @"";
 #endif
 
 
 #pragma mark - 详细接口地址
 /** 登录*/
-NSString *const kLogin = @"/login";
+NSString *const KLogin = @"";
 /** 平台会员退出*/
 NSString *const kExit = @"/exit";
 

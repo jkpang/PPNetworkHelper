@@ -118,18 +118,18 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 - (void)PPHTTPRequestLayerDemo
 {
     // 登陆
-    [PPHTTPRequest getLoginWithParameters:@"参数" success:^(id response) {
+    [PPHTTPRequest getLoginWithParameters:@{} success:^(id response) {
         
     } failure:^(NSError *error) {
         
     }];
     
-    // 退出
-    [PPHTTPRequest getExitWithParameters:@"参数" success:^(id response) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
+//    // 退出
+//    [PPHTTPRequest getExitWithParameters:@"参数" success:^(id response) {
+//
+//    } failure:^(NSError *error) {
+//
+//    }];
 }
 
 
@@ -144,7 +144,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     {
         self.cacheStatus.text = @"缓存打开";
         self.cacheSwitch.on = YES;
-        [PPNetworkHelper GET:url parameters:para responseCache:^(id responseCache) {
+        [[PPNetworkHelper shareTools] request:GET URLString:url parameters:para responseCache:^(id responseCache) {
             // 1.先加载缓存数据
             self.cacheData.text = [self jsonToString:responseCache];
         } success:^(id responseObject) {
@@ -162,11 +162,13 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         self.cacheSwitch.on = NO;
         self.cacheData.text = @"";
         
-        [PPNetworkHelper GET:url parameters:para success:^(id responseObject) {
+        [[PPNetworkHelper shareTools] request:GET URLString:url parameters:para success:^(id responseObject) {
+            // 2.再请求网络数据
             self.networkData.text = [self jsonToString:responseObject];
         } failure:^(NSError *error) {
             
         }];
+        
         
     }
     
@@ -236,7 +238,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         self.download = YES;
         [self.downloadBtn setTitle:@"取消下载" forState:UIControlStateNormal];
         
-        task = [PPNetworkHelper downloadWithURL:downloadUrl fileDir:@"Download" progress:^(NSProgress *progress) {
+        task = [[PPNetworkHelper shareTools] downloadWithURL:downloadUrl fileDir:@"Download" progress:^(NSProgress *progress) {
             
             CGFloat stauts = 100.f * progress.completedUnitCount/progress.totalUnitCount;
             self.progress.progress = stauts/100.f;
