@@ -14,16 +14,11 @@
  * 如果您在使用 PPNetworkHelper 的过程中出现bug或有更好的建议,还请及时以下列方式联系我,我会及
  * 时修复bug,解决问题.
  *
- * Weibo : CoderPang
+ * Weibo : jkpang-庞 (http://weibo.com/jkpang )
  * Email : jkpang@outlook.com
  * QQ 群 : 323408051
  * GitHub: https://github.com/jkpang
- *
- * PS:我的另外两个很好用的封装,欢迎使用!
- * 1.一行代码获取通讯录联系人,并进行A~Z精准排序(已处理姓名所有字符的排序问题):
- *   GitHub:https://github.com/jkpang/PPGetAddressBook
- * 2.iOS中一款高度可定制性商品计数按钮(京东/淘宝/饿了么/美团外卖/百度外卖样式):
- *   GitHub:https://github.com/jkpang/PPNumberButton
+ * Blog  : https://www.jkpang.cn
  *
  * 如果 PPGetAddressBookSwift 好用,希望您能Star支持,你的 ⭐️ 是我持续更新的动力!
  *********************************************************************************
@@ -45,38 +40,23 @@
  *  @param URL        请求的URL地址
  *  @param parameters 请求的参数
  */
-+ (void)setHttpCache:(id)httpData URL:(NSString *)URL parameters:(NSDictionary *)parameters;
++ (void)setHttpCache:(id)httpData URL:(NSString *)URL parameters:(id)parameters;
 
 /**
- *  根据请求的 URL与parameters 取出缓存数据
+ *  根据请求的 URL与parameters 同步取出缓存数据
  *
  *  @param URL        请求的URL
  *  @param parameters 请求的参数
  *
  *  @return 缓存的服务器数据
  */
-+ (id)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters;
++ (id)httpCacheForURL:(NSString *)URL parameters:(id)parameters;
 
-/**
- *  根据请求的 URL与parameters 异步取出缓存数据
- *
- *  @param URL        请求的URL
- *  @param parameters 请求的参数
- *  @param block      异步回调缓存的数据
- *
- *  @return 缓存的服务器数据
- */
-+ (void)httpCacheForURL:(NSString *)URL parameters:(NSDictionary *)parameters withBlock:(void(^)(id<NSCoding> object))block;
-
-/**
- *  获取网络缓存的总大小 bytes(字节)
- */
+/// 获取网络缓存的总大小 bytes(字节)
 + (NSInteger)getAllHttpCacheSize;
 
 
-/**
- *  删除所有网络缓存,
- */
+/// 删除所有网络缓存
 + (void)removeAllHttpCache;
 
 @end

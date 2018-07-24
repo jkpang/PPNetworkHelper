@@ -6,7 +6,7 @@
 //  Copyright © 2017年 AndyPang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 /*
  
  将项目中所有的接口写在这里,方便统一管理,降低耦合
@@ -17,14 +17,14 @@
  这样做切换方便,不用来回每个网络请求修改请求域名,降低出错事件
  */
 
+
 #ifndef PPInterfacedConst_h
 #define PPInterfacedConst_h
 
-#define DevelopSever 1
-#define TestSever    0
+#define DevelopSever 0
+#define TestSever    1
 #define ProductSever 0
 
-#if DevelopSever
 /** 接口前缀-开发服务器*/
 NSString *const kApiPrefix = @"";
 #elif TestSever
@@ -40,6 +40,7 @@ NSString *const kApiPrefix = @"";
 /** 登录*/
 NSString *const KLogin = @"";
 /** 平台会员退出*/
-NSString *const kExit = @"/exit";
+NSString *const kApiPrefix = @"";
 
-#endif
+
+

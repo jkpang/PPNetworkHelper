@@ -59,30 +59,28 @@ static PPNetworkHelper*_sessionManager = nil;
 
 #pragma mark - 开始监听网络
 + (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                networkStatus ? networkStatus(PPNetworkStatusUnknown) : nil;
+                if (_isOpenLog) PPLog(@"未知网络");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                networkStatus ? networkStatus(PPNetworkStatusNotReachable) : nil;
+                if (_isOpenLog) PPLog(@"无网络");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                networkStatus ? networkStatus(PPNetworkStatusReachableViaWWAN) : nil;
+                if (_isOpenLog) PPLog(@"手机自带网络");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                networkStatus ? networkStatus(PPNetworkStatusReachableViaWiFi) : nil;
+                if (_isOpenLog) PPLog(@"WIFI");
+                break;
+        }
+    }];
 
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            switch (status) {
-                case AFNetworkReachabilityStatusUnknown:
-                    networkStatus ? networkStatus(PPNetworkStatusUnknown) : nil;
-                    if (_isOpenLog) PPLog(@"未知网络");
-                    break;
-                case AFNetworkReachabilityStatusNotReachable:
-                    networkStatus ? networkStatus(PPNetworkStatusNotReachable) : nil;
-                    if (_isOpenLog) PPLog(@"无网络");
-                    break;
-                case AFNetworkReachabilityStatusReachableViaWWAN:
-                    networkStatus ? networkStatus(PPNetworkStatusReachableViaWWAN) : nil;
-                    if (_isOpenLog) PPLog(@"手机自带网络");
-                    break;
-                case AFNetworkReachabilityStatusReachableViaWiFi:
-                    networkStatus ? networkStatus(PPNetworkStatusReachableViaWiFi) : nil;
-                    if (_isOpenLog) PPLog(@"WIFI");
-                    break;
-            }
-        }];
-    });
 }
 
 + (BOOL)isNetwork {
@@ -162,25 +160,24 @@ static PPNetworkHelper*_sessionManager = nil;
         default:
             break;
     }
-    
-    //读取缓存
-    responseCache!=nil ? responseCache([PPNetworkCache httpCacheForURL:URLString parameters:parameters]) : nil;
-   
-    NSURLSessionTask *sessionTask = [self dataTaskWithHTTPMethod:methodString URLString:URLString parameters:parameters uploadProgress:nil downloadProgress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-
-        if (_isOpenLog) {PPLog(@"responseObject = %@",[self jsonToString:responseObject]);}
+    NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if (_isOpenLog) {PPLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        responseCache!=nil ? [PPNetworkCache setHttpCache:responseObject URL:URLString parameters:parameters] : nil;
+        responseCache!=nil ? [PPNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
         
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         if (_isOpenLog) {PPLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
         
     }];
+    
     [sessionTask resume];
     // 添加sessionTask到数组
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
@@ -208,7 +205,7 @@ static PPNetworkHelper*_sessionManager = nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {PPLog(@"responseObject = %@",[self jsonToString:responseObject]);}
+        if (_isOpenLog) {PPLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
@@ -261,7 +258,7 @@ static PPNetworkHelper*_sessionManager = nil;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {PPLog(@"responseObject = %@",[self jsonToString:responseObject]);}
+        if (_isOpenLog) {PPLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
@@ -344,10 +341,12 @@ static PPNetworkHelper*_sessionManager = nil;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
+
 //+ (void)initialize {
 //    _sessionManager = [AFHTTPSessionManager manager];
 //    
 //}
+ 
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
 

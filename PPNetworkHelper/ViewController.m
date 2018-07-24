@@ -14,7 +14,7 @@
  * 如果您在使用 PPNetworkHelper 的过程中出现bug或有更好的建议,还请及时以下列方式联系我,我会及
  * 时修复bug,解决问题.
  *
- * Weibo : CoderPang
+ * Weibo : jkpang-庞
  * Email : jkpang@outlook.com
  * QQ 群 : 323408051
  * GitHub: https://github.com/jkpang
@@ -281,11 +281,8 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 
 #pragma mark - 缓存开关
 - (IBAction)isCache:(UISwitch *)sender {
-    
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setBool:sender.isOn forKey:@"isOn"];
-    [userDefault synchronize];
-    
+    [[NSUserDefaults standardUserDefaults] setBool:sender.isOn forKey:@"isOn"];
+
     [self getData:sender.isOn url:dataUrl];
 }
 
