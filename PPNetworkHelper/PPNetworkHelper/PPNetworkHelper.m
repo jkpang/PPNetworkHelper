@@ -163,7 +163,6 @@ static PPNetworkHelper*_sessionManager = nil;
     NSURLSessionTask *sessionTask = [_sessionManager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
         if (_isOpenLog) {PPLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
