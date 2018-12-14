@@ -30,7 +30,7 @@ then
 ### 1. 无自动缓存(GET与POST请求用法相同)
 #### 1.1 无缓存
 ```objc
-[PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
+[PPNetworkHelper request:GET URLString:url parameters:nil success:^(id responseObject) {
         //请求成功
     } failure:^(NSError *error) {
         //请求失败
@@ -39,7 +39,7 @@ then
 #### 1.2 无缓存,手动缓存
 
 ```objc
-[PPNetworkHelper GET:url parameters:nil success:^(id responseObject) {
+[PPNetworkHelper request:GET URLString:url parameters:nil success:^(id responseObject) {
     //请求成功
         //手动缓存
     [PPNetworkCache setHttpCache:responseObject URL:url parameters:parameters];
@@ -50,7 +50,7 @@ then
 ### 2. 自动缓存(GET与POST请求用法相同)
 
 ```objc
-[PPNetworkHelper GET:url parameters:nil responseCache:^(id responseCache) {
+[PPNetworkHelper request:GET URLString:url parameters:nil responseCache:^(id responseCache) {
         //加载缓存数据
     } success:^(id responseObject) {
         //请求成功
