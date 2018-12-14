@@ -106,7 +106,11 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         [self getCurrentNetworkStatus];
     });
     
-    [self PPHTTPRequestLayerDemo];
+//    [self PPHTTPRequestLayerDemo];
+    
+    
+   BOOL isOn = [[[NSUserDefaults standardUserDefaults] objectForKey:@"isOn"] boolValue];
+  [self getData:isOn url:dataUrl];
 }
 
 /**
@@ -130,6 +134,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 //    } failure:^(NSError *error) {
 //
 //    }];
+    
 }
 
 
@@ -137,19 +142,23 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 #pragma  mark - 这里的请求只是一个演示, 在真实的项目中建议不要这样做, 具体做法可以参照PPHTTPRequestLayer文件夹的例子
 - (void)getData:(BOOL)isOn url:(NSString *)url
 {
-    
+    self.networkData.editable = NO;
+    self.cacheData.editable = NO;
+
     NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
     // 自动缓存
     if(isOn)
     {
         self.cacheStatus.text = @"缓存打开";
         self.cacheSwitch.on = YES;
-        [[PPNetworkHelper shareTools] request:GET URLString:url parameters:para responseCache:^(id responseCache) {
+
+        [PPNetworkHelper request:GET URLString:url parameters:para responseCache:^(id responseCache) {
             // 1.先加载缓存数据
-            self.cacheData.text = [self jsonToString:responseCache];
+            self.cacheData.text = [NSString stringWithFormat:@"%@",responseCache];
         } success:^(id responseObject) {
             // 2.再请求网络数据
-            self.networkData.text = [self jsonToString:responseObject];
+            self.networkData.text = [NSString stringWithFormat:@"%@",responseObject];
+            self.cacheData.text = self.networkData.text;
         } failure:^(NSError *error) {
             
         }];
@@ -158,14 +167,16 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     // 无缓存
     else
     {
+
         self.cacheStatus.text = @"缓存关闭";
         self.cacheSwitch.on = NO;
         self.cacheData.text = @"";
         
-        [[PPNetworkHelper shareTools] request:GET URLString:url parameters:para success:^(id responseObject) {
+        [PPNetworkHelper request:GET URLString:url parameters:para success:^(id responseObject) {
             // 2.再请求网络数据
-            self.networkData.text = [self jsonToString:responseObject];
+            self.networkData.text = [NSString stringWithFormat:@"%@",responseObject];
         } failure:^(NSError *error) {
+          
             
         }];
         
@@ -238,7 +249,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         self.download = YES;
         [self.downloadBtn setTitle:@"取消下载" forState:UIControlStateNormal];
         
-        task = [[PPNetworkHelper shareTools] downloadWithURL:downloadUrl fileDir:@"Download" progress:^(NSProgress *progress) {
+        task = [PPNetworkHelper downloadWithURL:downloadUrl fileDir:@"Download" progress:^(NSProgress *progress) {
             
             CGFloat stauts = 100.f * progress.completedUnitCount/progress.totalUnitCount;
             self.progress.progress = stauts/100.f;
@@ -274,9 +285,6 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
         self.progress.progress = 0;
         [self.downloadBtn setTitle:@"开始下载" forState:UIControlStateNormal];
     }
-    
-    
-    
 }
 
 #pragma mark - 缓存开关
@@ -289,7 +297,7 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
 /**
  *  json转字符串
  */
-- (NSString *)jsonToString:(NSDictionary *)dic
+- (NSString *)jsonToString:(NSData *)dic
 {
     if(!dic){
         return nil;

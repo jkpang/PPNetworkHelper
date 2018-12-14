@@ -94,12 +94,6 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 @interface PPNetworkHelper : AFHTTPSessionManager
 
 /**
- *  所有的HTTP请求共享一个AFHTTPSessionManager
- *  原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
- */
-
-+(instancetype)shareTools;
-/**
  有网YES, 无网:NO
  */
 + (BOOL)isNetwork;
@@ -123,12 +117,12 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 /**
  取消所有HTTP请求
  */
-- (void)cancelAllRequest;
++ (void)cancelAllRequest;
 
 /**
  取消指定URL的HTTP请求
  */
-- (void)cancelRequestWithURL:(NSString *)URL;
++ (void)cancelRequestWithURL:(NSString *)URL;
 
 
 /**
@@ -142,7 +136,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  @param failure 请求失败的回调
  @return 返回的对象可取消请求,调用cancel方法
  */
--(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
++(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
                responseCache:(PPHttpRequestCache)responseCache
                      success:(PPHttpRequestSuccess)success
                      failure:(PPHttpRequestFailed)failure;
@@ -158,7 +152,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  @param failure 请求失败的回调
  @return 返回的对象可取消请求,调用cancel方法
  */
--(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
++(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
                      success:(PPHttpRequestSuccess)success
                      failure:(PPHttpRequestFailed)failure;
 
@@ -175,7 +169,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *
  *  @return 返回的对象可取消请求,调用cancel方法
  */
-- (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
++ (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
                                       parameters:(id)parameters
                                             name:(NSString *)name
                                         filePath:(NSString *)filePath
@@ -199,7 +193,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *
  *  @return 返回的对象可取消请求,调用cancel方法
  */
-- (__kindof NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
++ (__kindof NSURLSessionTask *)uploadImagesWithURL:(NSString *)URL
                                         parameters:(id)parameters
                                               name:(NSString *)name
                                             images:(NSArray<UIImage *> *)images
@@ -221,7 +215,7 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  *
  *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
-- (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL
++ (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL
                                        fileDir:(NSString *)fileDir
                                       progress:(PPHttpProgress)progress
                                        success:(void(^)(NSString *filePath))success
