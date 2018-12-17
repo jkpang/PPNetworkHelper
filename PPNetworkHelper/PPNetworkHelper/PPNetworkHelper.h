@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "PPNetworkCache.h"
-
+#import "AFNetworking.h"
 #ifndef kIsNetwork
 #define kIsNetwork     [PPNetworkHelper isNetwork]  // 一次性判断是否有网的宏
 #endif
@@ -41,6 +41,15 @@
 #ifndef kIsWiFiNetwork
 #define kIsWiFiNetwork [PPNetworkHelper isWiFiNetwork]  // 一次性判断是否为WiFi网络的宏
 #endif
+//请求方式
+typedef enum: NSInteger{
+    GET,//GET请求
+    POST,
+    DELETE,
+    HEAD,
+    PATCH,
+    PUT,
+}PPRequestMethod;
 
 typedef NS_ENUM(NSUInteger, PPNetworkStatusType) {
     /// 未知网络
@@ -82,10 +91,11 @@ typedef void (^PPHttpProgress)(NSProgress *progress);
 /// 网络状态的Block
 typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 
-@class AFHTTPSessionManager;
-@interface PPNetworkHelper : NSObject
+@interface PPNetworkHelper : AFHTTPSessionManager
 
-/// 有网YES, 无网:NO
+/**
+ 有网YES, 无网:NO
+ */
 + (BOOL)isNetwork;
 
 /// 手机网络:YES, 反之:NO
@@ -94,14 +104,8 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 /// WiFi网络:YES, 反之:NO
 + (BOOL)isWiFiNetwork;
 
-/// 取消所有HTTP请求
-+ (void)cancelAllRequest;
-
 /// 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
 + (void)networkStatusWithBlock:(PPNetworkStatus)networkStatus;
-
-/// 取消指定URL的HTTP请求
-+ (void)cancelRequestWithURL:(NSString *)URL;
 
 /// 开启日志打印 (Debug级别)
 + (void)openLog;
@@ -111,68 +115,46 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
 
 
 /**
- *  GET请求,无缓存
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancel方法
+ 取消所有HTTP请求
  */
-+ (__kindof NSURLSessionTask *)GET:(NSString *)URL
-                        parameters:(id)parameters
-                           success:(PPHttpRequestSuccess)success
-                           failure:(PPHttpRequestFailed)failure;
++ (void)cancelAllRequest;
 
 /**
- *  GET请求,自动缓存
- *
- *  @param URL           请求地址
- *  @param parameters    请求参数
- *  @param responseCache 缓存数据的回调
- *  @param success       请求成功的回调
- *  @param failure       请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancel方法
+ 取消指定URL的HTTP请求
  */
-+ (__kindof NSURLSessionTask *)GET:(NSString *)URL
-                        parameters:(id)parameters
-                     responseCache:(PPHttpRequestCache)responseCache
-                           success:(PPHttpRequestSuccess)success
-                           failure:(PPHttpRequestFailed)failure;
++ (void)cancelRequestWithURL:(NSString *)URL;
+
 
 /**
- *  POST请求,无缓存
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancel方法
+ 网络请求,有缓存
+ 
+ @param method 请求方式 GET/POST(可根据枚举自行选择多种请求方式)
+ @param URLString 请求地址
+ @param parameters 请求参数
+ @param responseCache 缓存数据的回调
+ @param success 请求成功的回调
+ @param failure 请求失败的回调
+ @return 返回的对象可取消请求,调用cancel方法
  */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(id)parameters
-                            success:(PPHttpRequestSuccess)success
-                            failure:(PPHttpRequestFailed)failure;
++(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
+               responseCache:(PPHttpRequestCache)responseCache
+                     success:(PPHttpRequestSuccess)success
+                     failure:(PPHttpRequestFailed)failure;
+
 
 /**
- *  POST请求,自动缓存
- *
- *  @param URL           请求地址
- *  @param parameters    请求参数
- *  @param responseCache 缓存数据的回调
- *  @param success       请求成功的回调
- *  @param failure       请求失败的回调
- *
- *  @return 返回的对象可取消请求,调用cancel方法
+  网络请求,无缓存
+
+ @param method 请求方式 GET/POST(可根据枚举自行选择多种请求方式)
+ @param URLString 请求地址
+ @param parameters 请求参数
+ @param success 请求成功的回调
+ @param failure 请求失败的回调
+ @return 返回的对象可取消请求,调用cancel方法
  */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(id)parameters
-                      responseCache:(PPHttpRequestCache)responseCache
-                            success:(PPHttpRequestSuccess)success
-                            failure:(PPHttpRequestFailed)failure;
++(NSURLSessionTask *)request:(PPRequestMethod)method URLString:(NSString *)URLString parameters:(id)parameters
+                     success:(PPHttpRequestSuccess)success
+                     failure:(PPHttpRequestFailed)failure;
 
 /**
  *  上传文件
